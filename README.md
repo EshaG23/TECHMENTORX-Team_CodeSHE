@@ -1,127 +1,103 @@
-🌍 SevaSetu (Social Mentor)
+# 🌍 SevaSetu (Social Mentor)
+### A Location-Based Donation Coordination Platform
 
-A Location-Based Donation Coordination Platform
+---
 
-📌 Problem Statement
-
+## 📌 Problem Statement
 Many donors, local businesses, and college social clubs are willing to donate food, clothes, toys, and essential items, but lack a structured platform to connect with NGOs and volunteers.
 
 Existing donation processes are:
+- Unorganized  
+- Not location-aware  
+- Difficult to track  
+- Do not recognize volunteer efforts  
 
-Unorganized
+As a result, resources are wasted, delayed, or fail to reach the right people in need.
 
-Not location-aware
+---
 
-Difficult to track
+## 💡 Solution
+**SevaSetu** is a centralized, location-based donation coordination platform that connects **donors, NGOs, and volunteers** to ensure transparent, verified, and efficient donation distribution.
 
-Do not recognize volunteer efforts
+It bridges the gap between **intent and impact**.
 
-As a result, resources are wasted, delayed, or fail to reach the right people.
+---
 
-💡 Solution
+## ✨ Key Features
+- 📍 Auto location detection (GPS & manual)
+- 🗺️ Nearby NGO discovery with interactive map
+- 📦 Donation management (Food, Clothes, Toys, Essentials)
+- 🔐 OTP-based donation verification
+- 🚚 Pickup / drop-off scheduling
+- 🏆 Gamification (Points, Leaderboard, Badges)
+- 📜 Digital certificates for verified contributions
+- 📊 Donation history & tracking
 
-SevaSetu is a centralized, location-based donation coordination platform that connects donors, NGOs, and volunteers to ensure transparent, verified, and efficient donation distribution.
+---
 
-It bridges the gap between intent and impact.
+## ⚙️ Tech Stack
 
-✨ Key Features
+### Frontend
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+- Leaflet.js
 
-📍 Auto Location Detection (GPS-based & manual selection)
+### Backend
+- Python
+- Flask (REST APIs)
 
-🗺️ Nearby NGO Discovery using interactive maps
+### Data Storage (Prototype)
+- JSON files for:
+  - Users
+  - NGOs & Volunteers
+  - Donation requests & history
+  - Leaderboard & Certificates
 
-📦 Donation Management (Food, Clothes, Toys, Essentials)
+### Location & Mapping
+- Browser Geolocation API
+- Haversine Algorithm
+- OpenStreetMap
 
-🔐 OTP-based Donation Verification
+---
 
-🚚 Pickup / Drop-off Scheduling
-
-🏆 Gamification – Points, Leaderboard & Badges
-
-📜 Digital Certificates for verified contributions
-
-📊 Donation History & Tracking
-
-⚙️ Tech Stack
-Frontend
-
-HTML5
-
-CSS3
-
-JavaScript (Vanilla JS)
-
-Leaflet.js (Maps)
-
-Backend
-
-Python
-
-Flask (REST APIs)
-
-Data Storage (Prototype)
-
-JSON-based storage for:
-
-Users
-
-NGOs & Volunteers
-
-Donations
-
-Certificates
-
-Leaderboard
-
-Location & Mapping
-
-Browser Geolocation API
-
-Haversine Algorithm
-
-OpenStreetMap
-
-🏗️ System Architecture
+## 🏗️ System Architecture
 User (Donor)
-   ↓
+↓
 Frontend (HTML/CSS/JS)
-   ↓
+↓
 Flask Backend (APIs)
-   ↓
+↓
 Location Matching + NGO Data
-   ↓
+↓
 Donation Verification & Tracking
 
-🚀 How It Works
 
-User opens the platform
+---
 
-Location is auto-detected or selected manually
+## 🚀 How It Works
+1. User opens the platform
+2. Location is auto-detected or selected manually
+3. Nearby NGOs are displayed on the map
+4. User selects an NGO and donation category
+5. Pickup or drop-off is scheduled
+6. Donation is verified using OTP
+7. Points & certificates are awarded
 
-Nearby NGOs are displayed on a map
+---
 
-User selects an NGO and donation category
+## 🧪 Run Locally
 
-Pickup or drop-off is scheduled
-
-Donation is verified using OTP
-
-Points & certificates are awarded
-
-🧪 Running the Project Locally
-1️⃣ Clone the Repository
+### 1️⃣ Clone Repository
+```bash
 git clone https://github.com/your-username/sevasetu.git
 cd sevasetu
-
 2️⃣ Install Dependencies
 pip install flask
-
-3️⃣ Run the Application
+3️⃣ Start Server
 python app.py
-
 4️⃣ Open in Browser
 http://localhost:5000
-
 📁 Project Structure
 ├── app.py
 ├── landing.html
@@ -137,9 +113,7 @@ http://localhost:5000
 ├── leaderboard.json
 ├── certificates.json
 └── README.md
-
 🌱 Future Scope
-
 Mobile App (Android / iOS)
 
 Cloud database integration
@@ -148,24 +122,20 @@ AI-based demand prediction
 
 NGO rating & feedback system
 
-WhatsApp / SMS notifications
+SMS / WhatsApp notifications
 
 Disaster relief & emergency mode
 
-Government & corporate partnerships
-
 🌟 Social Impact
+Transparent and trusted donations
 
-Ensures transparent & trusted donations
+Reduced resource wastage
 
-Reduces resource wastage
+Increased student & youth participation
 
-Encourages student & youth participation
-
-Creates a scalable model for social good
+Scalable model for nationwide impact
 
 🏆 Hackathon Value
-
 Real-world problem
 
 Working prototype
@@ -174,13 +144,8 @@ Scalable architecture
 
 Strong social impact
 
-Low-cost & high-efficiency solution
-
 👩‍💻 Team
-
 Team_CodeSHE – TECHMENTORX
-Built with ❤️ during a Hackathon to create real social impact.
 
 📜 License
-
 This project is developed for educational and hackathon purposes.
