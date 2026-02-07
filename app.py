@@ -4,6 +4,7 @@ import json, math, os
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(APP_DIR, "ngo_info_by_city_with_volunteers.json")
 USERS_PATH = os.path.join(APP_DIR, "users.json")
+DONATION_REQUESTS_PATH = os.path.join(APP_DIR, "donation_requests.json")
 
 with open(DATA_PATH, "r", encoding="utf-8") as f:
     NGO_BY_CITY = json.load(f)
@@ -135,6 +136,90 @@ def api_login():
         
     except Exception as e:
         return jsonify({"error": "Server error during login"}), 500
+
+def _load_donation_requests():
+    try:
+        with open(DONATION_REQUESTS_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+def _save_donation_requests(requests_list):
+    with open(DONATION_REQUESTS_PATH, "w", encoding="utf-8") as f:
+        json.dump(requests_list, f, indent=2, ensure_ascii=False)
+
+@app.post("/api/donation_request")
+def api_donation_request():
+    """Save a pickup or drop-off donation request. Expects JSON: donor_name, donor_phone, donor_email (optional),
+       ngo_id, ngo_name, city, mode ('pickup'|'dropoff'), items (list of {item_category, item_name, quantity, condition}),
+       preferred_time (optional), address (optional for pickup)."""
+    try:
+        data = request.get_json() or {}
+        donor_name = (data.get("donor_name") or "").strip()
+        donor_phone = (data.get("donor_phone") or "").strip()
+        donor_email = (data.get("donor_email") or "").strip()
+        ngo_id = (data.get("ngo_id") or "").strip()
+        ngo_name = (data.get("ngo_name") or "").strip()
+        city = (data.get("city") or "").strip()
+        mode = (data.get("mode") or "").strip().lower()
+        items = data.get("items")
+        preferred_time = (data.get("preferred_time") or "").strip()
+        address = (data.get("address") or "").strip()
+
+        if not donor_name or len(donor_name) < 2:
+            return jsonify({"error": "Valid donor name is required"}), 400
+        if not donor_phone or len(donor_phone) < 10:
+            return jsonify({"error": "Valid phone number is required"}), 400
+        if not ngo_id or not city:
+            return jsonify({"error": "NGO and city are required"}), 400
+        if mode not in ("pickup", "dropoff"):
+            return jsonify({"error": "Mode must be 'pickup' or 'dropoff'"}), 400
+        if not items or not isinstance(items, list) or len(items) == 0:
+            return jsonify({"error": "At least one donation item is required"}), 400
+
+        requests_list = _load_donation_requests()
+        import uuid
+        request_id = "DR" + uuid.uuid4().hex[:8].upper()
+
+        for idx, it in enumerate(items):
+            item_category = (it.get("item_category") or "").strip()
+            item_name = (it.get("item_name") or "").strip()
+            try:
+                quantity = int(it.get("quantity"), 10) if it.get("quantity") is not None else 1
+            except (TypeError, ValueError):
+                quantity = 1
+            condition = (it.get("condition") or "").strip()
+            donation_id = f"{request_id}-{idx + 1}"
+            record = {
+                "donation_id": donation_id,
+                "request_id": request_id,
+                "donor_name": donor_name,
+                "donor_phone": donor_phone,
+                "donor_email": donor_email,
+                "ngo_id": ngo_id,
+                "ngo_name": ngo_name,
+                "city": city,
+                "mode": "Pickup" if mode == "pickup" else "Drop-off",
+                "item_category": item_category,
+                "item_name": item_name,
+                "quantity": max(1, quantity),
+                "condition": condition,
+                "preferred_time": preferred_time or None,
+                "address": address or None,
+                "status": "Pending",
+                "created_at": __import__("datetime").datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            }
+            requests_list.append(record)
+
+        _save_donation_requests(requests_list)
+        return jsonify({
+            "success": True,
+            "request_id": request_id,
+            "message": "Donation request submitted successfully.",
+        }), 200
+    except Exception as e:
+        print(f"Donation request error: {e}")
+        return jsonify({"error": "Server error while saving donation request"}), 500
 
 if __name__ == "__main__":
     # Run: python app.py

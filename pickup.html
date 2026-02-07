@@ -3,27 +3,529 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SevaSetu — Pickup/Scheduling (Placeholder)</title>
+  <title>SevaSetu — Confirm location & schedule pickup</title>
+
+  <link rel="stylesheet" href="location.css" />
   <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;padding:24px;background:#f6fbfa;color:#0f172a}
-    .box{max-width:720px;margin:0 auto;background:#fff;border:1px solid #e7eef0;border-radius:18px;padding:18px}
-    .muted{color:#64748b}
-    code{background:#f1f5f9;padding:2px 6px;border-radius:8px}
+    .pickup-main { max-width: 560px; margin: 0 auto; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-weight: 850;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-group label .optional { color: var(--muted); font-weight: 750; font-size: 12px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      transition: border-color .15s ease, box-shadow .15s ease;
+      font-family: inherit;
+    }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(14,168,122,.12);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--muted); font-weight: 600; }
+
+    /* Confirm location step */
+    .confirm-step { margin-bottom: 24px; }
+    .confirm-step.hide { display: none; }
+    .location-summary {
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      background: rgba(14,168,122,.06);
+      border: 1px solid rgba(14,168,122,.18);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .location-summary-icon {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      display: grid; place-items: center;
+      color: #fff; font-size: 20px; flex-shrink: 0;
+    }
+    .location-summary-body { flex: 1; min-width: 0; }
+    .location-summary-title { font-weight: 950; font-size: 14px; margin-bottom: 2px; }
+    .location-summary-meta { font-size: 12.5px; color: var(--muted); font-weight: 750; }
+    .confirm-label { font-weight: 950; font-size: 13px; margin-bottom: 10px; display: block; color: var(--text); }
+    .delivery-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .delivery-option {
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .delivery-option:hover {
+      border-color: rgba(14,168,122,.35);
+      background: rgba(14,168,122,.04);
+    }
+    .delivery-option.selected {
+      border-color: var(--green);
+      background: rgba(14,168,122,.08);
+      box-shadow: 0 0 0 3px rgba(14,168,122,.12);
+    }
+    .delivery-option .icon { font-size: 28px; margin-bottom: 6px; }
+    .delivery-option .title { font-weight: 950; font-size: 14px; }
+    .delivery-option .desc { font-size: 12px; color: var(--muted); font-weight: 750; margin-top: 4px; }
+    .btn-confirm-location { margin-top: 8px; width: 100%; }
+    .btn-confirm-location:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* Volunteer info (after Pickup + Confirm) */
+    .volunteer-step { display: none; margin-bottom: 24px; }
+    .volunteer-step.show { display: block; }
+    .volunteer-card {
+      padding: 16px;
+      background: rgba(14,168,122,.06);
+      border: 1px solid rgba(14,168,122,.2);
+      border-radius: 18px;
+      margin-bottom: 12px;
+    }
+    .volunteer-card-title {
+      font-weight: 950;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .volunteer-card .v-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(14,168,122,.12);
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .volunteer-card .v-row:last-child { border-bottom: none; }
+    .volunteer-card .v-row .k { color: var(--muted); font-weight: 750; min-width: 100px; }
+    .volunteer-card .v-row .v { color: var(--text); }
+    .volunteer-card .ngo-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      background: rgba(15,23,42,.06);
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 850;
+      color: var(--muted);
+    }
+
+    /* Form step (pickup: after volunteer; drop-off: after confirm) */
+    .form-step { display: none; }
+    .form-step.show { display: block; }
+    .dropoff-cta {
+      display: none;
+      padding: 16px;
+      background: rgba(14,168,122,.06);
+      border: 1px solid rgba(14,168,122,.18);
+      border-radius: 18px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .dropoff-cta.show { display: block; }
+    .dropoff-cta .sub { margin: 0 0 14px; }
+    .params-pill {
+      margin-top: 18px;
+      padding: 12px 14px;
+      background: rgba(14,168,122,.06);
+      border: 1px solid rgba(14,168,122,.14);
+      border-radius: 14px;
+      font-size: 12.5px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+    .params-pill code {
+      background: rgba(15,23,42,.06);
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+    .params-pill.empty { display: none; }
+    .form-actions { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .form-actions .btn.primary { flex: 1; min-width: 180px; }
+
+    .no-city-notice {
+      padding: 14px;
+      background: rgba(255,193,7,.12);
+      border: 1px solid rgba(255,193,7,.3);
+      border-radius: 14px;
+      font-weight: 750;
+      color: #856404;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 500px) { .delivery-options { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>Pickup/Scheduling page (coming next)</h2>
-    <p class="muted">
-      This is just a placeholder so the <b>Continue</b> button works.
-      Next you’ll build: NGO + volunteer selection, pickup time scheduling, etc.
-    </p>
-    <p id="q"></p>
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo">❤</div>
+        <div class="brand-title">
+          <div class="name">Seva<span class="accent">Setu</span></div>
+          <div class="tag">Location • NGOs • Pickup</div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <a class="btn link" id="backLink" href="location.html">Back</a>
+        <button id="btnContinue" class="btn primary" disabled>Continue →</button>
+      </div>
+    </div>
   </div>
+
+  <main class="container main">
+    <div class="panel pickup-main">
+      <h1>Confirm location & schedule</h1>
+      <p class="sub">
+        Confirm your location, choose pickup (volunteer comes to you) or drop off (you take items to the NGO), then continue.
+      </p>
+
+      <!-- Step 1: Confirm location + Pickup or Drop off -->
+      <div id="confirmStep" class="confirm-step">
+        <div id="locationSummary" class="location-summary">
+          <div class="location-summary-icon">📍</div>
+          <div class="location-summary-body">
+            <div class="location-summary-title" id="summaryCity">—</div>
+            <div class="location-summary-meta" id="summaryMeta">—</div>
+          </div>
+        </div>
+        <div id="noCityNotice" class="no-city-notice" style="display:none;">
+          No city selected. <a href="location.html">Choose your location first</a>.
+        </div>
+        <label class="confirm-label">How do you want to donate?</label>
+        <div class="delivery-options">
+          <button type="button" id="optPickup" class="delivery-option" data-mode="pickup">
+            <div class="icon">🚚</div>
+            <div class="title">Pickup</div>
+            <div class="desc">Volunteer will come to your address to collect the donation.</div>
+          </button>
+          <button type="button" id="optDropoff" class="delivery-option" data-mode="dropoff">
+            <div class="icon">📍</div>
+            <div class="title">Drop off</div>
+            <div class="desc">You will take the donation to the NGO.</div>
+          </button>
+        </div>
+        <button type="button" id="btnConfirmLocation" class="btn primary btn-confirm-location" disabled>Confirm</button>
+      </div>
+
+      <!-- Step 2a: Volunteer info (only for Pickup after Confirm) -->
+      <div id="volunteerStep" class="volunteer-step">
+        <div class="volunteer-card">
+          <div class="volunteer-card-title">Volunteer who will pick up your donation</div>
+          <div class="v-row"><span class="k">Name</span><span class="v" id="volName">—</span></div>
+          <div class="v-row"><span class="k">Phone</span><span class="v" id="volPhone">—</span></div>
+          <div class="v-row"><span class="k">Role</span><span class="v" id="volRole">—</span></div>
+          <div id="volEmailRow" class="v-row" style="display:none;"><span class="k">Email</span><span class="v" id="volEmail">—</span></div>
+          <div class="ngo-badge" id="volNgoName">—</div>
+        </div>
+      </div>
+
+      <!-- Step 2b: Drop off CTA (only for Drop off after Confirm) -->
+      <div id="dropoffCta" class="dropoff-cta">
+        <p class="sub" id="dropoffCtaText">You’ll drop off your donation at the NGO. Add your details below and continue.</p>
+      </div>
+
+      <!-- Step 3: Sign-in form (for both; after volunteer for pickup, after confirm for drop off) -->
+      <div id="formStep" class="form-step">
+        <h2 style="font-size:18px; margin: 0 0 10px;">Your details</h2>
+        <p class="sub" style="margin-bottom: 16px;">We’ll share your contact with the NGO/volunteer and use this for the donation.</p>
+        <form id="pickupLogin" class="section" novalidate>
+          <div class="form-group">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Priya Sharma" required autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" name="phone" placeholder="e.g. 9876543210" required autocomplete="tel" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div id="pickupFields" class="pickup-only">
+            <div class="form-group">
+              <label for="preferredTime">Preferred pickup</label>
+              <select id="preferredTime" name="preferredTime">
+                <option value="">Select preference</option>
+                <option value="asap">As soon as possible</option>
+                <option value="morning">Morning (8 AM – 12 PM)</option>
+                <option value="afternoon">Afternoon (12 PM – 5 PM)</option>
+                <option value="evening">Evening (5 PM – 8 PM)</option>
+                <option value="custom">I’ll specify later</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="address">Pickup address *</label>
+              <textarea id="address" name="address" placeholder="Full address where volunteer will collect the donation" required></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn primary" id="btnSubmit">Confirm</button>
+          </div>
+        </form>
+      </div>
+
+
+    </div>
+  </main>
+
   <script>
-    const params = new URLSearchParams(location.search);
-    document.getElementById("q").innerHTML =
-      "Received query params: <code>" + params.toString() + "</code>";
+    (function () {
+      const params = new URLSearchParams(location.search);
+      const city = (params.get("city") || "").trim();
+      const lat = params.get("lat") || "";
+      const lng = params.get("lng") || "";
+      const ngoIdFromUrl = (params.get("ngo_id") || "").trim();
+      const ngoNameFromUrl = (params.get("ngo_name") || "").trim();
+      let itemsFromUrl = [];
+      try {
+        const itemsStr = params.get("items");
+        if (itemsStr) itemsFromUrl = JSON.parse(decodeURIComponent(itemsStr));
+        if (!Array.isArray(itemsFromUrl)) itemsFromUrl = [];
+      } catch (e) { itemsFromUrl = []; }
+      const hasItems = itemsFromUrl.length > 0;
+
+      const confirmStep = document.getElementById("confirmStep");
+      const locationSummary = document.getElementById("locationSummary");
+      const noCityNotice = document.getElementById("noCityNotice");
+      const summaryCity = document.getElementById("summaryCity");
+      const summaryMeta = document.getElementById("summaryMeta");
+      const optPickup = document.getElementById("optPickup");
+      const optDropoff = document.getElementById("optDropoff");
+      const btnConfirmLocation = document.getElementById("btnConfirmLocation");
+      const volunteerStep = document.getElementById("volunteerStep");
+      const volName = document.getElementById("volName");
+      const volPhone = document.getElementById("volPhone");
+      const volRole = document.getElementById("volRole");
+      const volEmail = document.getElementById("volEmail");
+      const volEmailRow = document.getElementById("volEmailRow");
+      const volNgoName = document.getElementById("volNgoName");
+      const dropoffCta = document.getElementById("dropoffCta");
+      const formStep = document.getElementById("formStep");
+      const pickupFields = document.getElementById("pickupFields");
+      const form = document.getElementById("pickupLogin");
+      const nameInput = document.getElementById("name");
+      const phoneInput = document.getElementById("phone");
+      const emailInput = document.getElementById("email");
+      const preferredTimeInput = document.getElementById("preferredTime");
+      const addressInput = document.getElementById("address");
+      const btnContinue = document.getElementById("btnContinue");
+      const btnSubmit = document.getElementById("btnSubmit");
+      const backLink = document.getElementById("backLink");
+
+      let selectedMode = null; // "pickup" | "dropoff"
+      let confirmed = false;
+      let selectedNgo = null;
+
+      // Location summary
+      if (city) {
+        locationSummary.style.display = "flex";
+        noCityNotice.style.display = "none";
+        summaryCity.textContent = city;
+        summaryMeta.textContent = (lat && lng) ? "Lat " + lat + ", Lng " + lng : (ngoNameFromUrl ? ngoNameFromUrl : "Location selected");
+      } else {
+        locationSummary.style.display = "none";
+        noCityNotice.style.display = "block";
+      }
+
+      if (hasItems && ngoIdFromUrl) {
+        backLink.href = "donation.html?" + params.toString();
+      } else if (city) {
+        backLink.href = "location.html?city=" + encodeURIComponent(city);
+      }
+      btnConfirmLocation.disabled = true; // require selecting Pickup or Drop off (and city)
+
+      // Delivery option selection (Confirm only when city + mode selected)
+      function setMode(mode) {
+        selectedMode = mode;
+        optPickup.classList.toggle("selected", mode === "pickup");
+        optDropoff.classList.toggle("selected", mode === "dropoff");
+        btnConfirmLocation.disabled = !mode || !city;
+      }
+      optPickup.addEventListener("click", () => setMode("pickup"));
+      optDropoff.addEventListener("click", () => setMode("dropoff"));
+
+      // Confirm location
+      btnConfirmLocation.addEventListener("click", async function () {
+        if (!selectedMode || !city) return;
+
+        if (selectedMode === "pickup") {
+          try {
+            const res = await fetch("/api/ngos?city=" + encodeURIComponent(city));
+            const data = await res.json();
+            const ngos = data.ngos || [];
+            if (ngos.length === 0) {
+              volName.textContent = "No volunteer found for this city.";
+              volPhone.textContent = volRole.textContent = "";
+              volEmailRow.style.display = "none";
+              selectedNgo = null;
+            } else {
+              if (ngoIdFromUrl) {
+                selectedNgo = ngos.find(function (n) { return (n.ngo_id || "") === ngoIdFromUrl; }) || ngos[0];
+              } else {
+                selectedNgo = ngos[0];
+              }
+              const vol = selectedNgo.volunteer || {};
+              volName.textContent = vol.name || "—";
+              volPhone.textContent = vol.phone || "—";
+              volRole.textContent = vol.role || "—";
+              if (vol.email) {
+                volEmailRow.style.display = "flex";
+                volEmail.textContent = vol.email;
+              } else {
+                volEmailRow.style.display = "none";
+              }
+              volNgoName.textContent = selectedNgo.name || "—";
+              sessionStorage.setItem("pickup_ngo_id", selectedNgo.ngo_id || "");
+              sessionStorage.setItem("pickup_ngo_name", selectedNgo.name || "");
+            }
+            volunteerStep.classList.add("show");
+            dropoffCta.classList.remove("show");
+            pickupFields.style.display = "block";
+            addressInput.required = true;
+          } catch (e) {
+            volName.textContent = "Could not load volunteer. Try again.";
+            volPhone.textContent = volRole.textContent = "";
+            volunteerStep.classList.add("show");
+          }
+        } else {
+          volunteerStep.classList.remove("show");
+          dropoffCta.classList.add("show");
+          pickupFields.style.display = "none";
+          addressInput.required = false;
+        }
+
+        confirmed = true;
+        confirmStep.classList.add("hide");
+        formStep.classList.add("show");
+        btnConfirmLocation.disabled = true;
+      });
+
+      // Form validation
+      function validate() {
+        const name = (nameInput.value || "").trim();
+        const phone = (phoneInput.value || "").trim();
+        btnContinue.disabled = !(name.length >= 2 && phone.length >= 10);
+      }
+      nameInput.addEventListener("input", validate);
+      nameInput.addEventListener("change", validate);
+      phoneInput.addEventListener("input", validate);
+      phoneInput.addEventListener("change", validate);
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const name = (nameInput.value || "").trim();
+        const phone = (phoneInput.value || "").trim();
+        const email = (emailInput.value || "").trim();
+        const preferredTime = (preferredTimeInput.value || "").trim();
+        const address = (addressInput.value || "").trim();
+        if (name.length < 2 || phone.length < 10) return;
+
+        if (selectedMode === "pickup" && !address) {
+          alert("Please enter your pickup address for volunteer collection.");
+          return;
+        }
+
+        sessionStorage.setItem("pickup_donor_name", name);
+        sessionStorage.setItem("pickup_donor_phone", phone);
+        if (email) sessionStorage.setItem("pickup_donor_email", email);
+        if (preferredTime) sessionStorage.setItem("pickup_preferred_time", preferredTime);
+        if (address) sessionStorage.setItem("pickup_address", address);
+        sessionStorage.setItem("pickup_mode", selectedMode || "");
+
+        if (hasItems && itemsFromUrl.length > 0) {
+          const ngoId = (selectedNgo && selectedNgo.ngo_id) ? selectedNgo.ngo_id : ngoIdFromUrl;
+          const ngoName = (selectedNgo && selectedNgo.name) ? selectedNgo.name : ngoNameFromUrl;
+          if (!ngoId) {
+            alert("NGO not selected. Please go back and choose an NGO.");
+            return;
+          }
+          btnSubmit.disabled = true;
+          btnSubmit.textContent = "Submitting…";
+          try {
+            const res = await fetch("/api/donation_request", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                donor_name: name,
+                donor_phone: phone,
+                donor_email: email,
+                ngo_id: ngoId,
+                ngo_name: ngoName,
+                city: city,
+                mode: selectedMode,
+                items: itemsFromUrl,
+                preferred_time: preferredTime || undefined,
+                address: address || undefined
+              })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+              alert(data.error || "Failed to submit. Please try again.");
+              btnSubmit.disabled = false;
+              btnSubmit.textContent = "Confirm";
+              return;
+            }
+            // Store certificate + summary data (donor, NGO, city, date, items, mode, preferred_time)
+            const certData = {
+              donor_name: name,
+              ngo_name: ngoName,
+              city: city,
+              completed_at: new Date().toISOString().split("T")[0],
+              items: itemsFromUrl,
+              mode: selectedMode,
+              preferred_time: preferredTime || ""
+            };
+            try { sessionStorage.setItem("sevasetu_certificate", JSON.stringify(certData)); } catch (e) {}
+            window.location.href = "success.html?request_id=" + encodeURIComponent(data.request_id || "") + "&mode=" + encodeURIComponent(selectedMode || "");
+          } catch (err) {
+            alert("Network error. Please try again.");
+            btnSubmit.disabled = false;
+            btnSubmit.textContent = "Confirm";
+          }
+          return;
+        }
+
+        const next = new URLSearchParams(location.search);
+        next.set("donor", "1");
+        if (selectedNgo && selectedNgo.ngo_id) {
+          next.set("ngo_id", selectedNgo.ngo_id);
+          next.set("ngo_name", selectedNgo.name || "");
+        }
+        window.location.href = "donation.html?" + next.toString();
+      });
+
+      btnContinue.addEventListener("click", function () {
+        if (this.disabled) return;
+        form.requestSubmit();
+      });
+
+      validate();
+    })();
   </script>
 </body>
 </html>

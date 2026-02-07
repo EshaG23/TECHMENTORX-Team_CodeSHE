@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SevaSetu — Thank you</title>
+  <link rel="stylesheet" href="location.css" />
+  <style>
+    .success-main { max-width: 480px; margin: 0 auto; text-align: center; padding: 40px 0; }
+    .success-icon {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: #fff;
+      font-size: 40px;
+      display: grid; place-items: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 14px 30px rgba(14,168,122,.25);
+    }
+    .success-main h1 { font-size: 24px; margin: 0 0 10px; }
+    .success-main .sub { color: var(--muted); font-weight: 750; margin-bottom: 24px; }
+    .request-id-pill {
+      display: inline-block;
+      padding: 10px 16px;
+      background: rgba(14,168,122,.1);
+      border: 1px solid rgba(14,168,122,.2);
+      border-radius: 14px;
+      font-size: 13px; font-weight: 800;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .success-actions { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .success-actions .btn { min-width: 200px; justify-content: center; }
+
+    /* Donation summary receipt */
+    .donation-summary-card {
+      max-width: 480px;
+      margin: 0 auto 28px;
+      padding: 0;
+      background: var(--surface, #fff);
+      border-radius: var(--radius, 18px);
+      box-shadow: var(--shadow, 0 18px 45px rgba(2,44,43,.10));
+      border: 1px solid var(--border, #e7eef0);
+      overflow: hidden;
+      text-align: left;
+    }
+    .donation-summary-card.hide { display: none; }
+    .donation-summary-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text, #0f172a);
+      text-align: center;
+      padding: 20px 16px 16px;
+      margin: 0;
+      border-bottom: 1px solid var(--border, #e7eef0);
+    }
+    .donation-summary-list { padding: 8px 16px 20px; }
+    .donation-summary-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(14,168,122,.08);
+    }
+    .donation-summary-row:last-child { border-bottom: none; }
+    .donation-summary-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 12px;
+      background: rgba(14,168,122,.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .donation-summary-body { flex: 1; min-width: 0; }
+    .donation-summary-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--muted, #64748b);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .donation-summary-value {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text, #0f172a);
+    }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo">❤</div>
+        <div class="brand-title">
+          <div class="name">Seva<span class="accent">Setu</span></div>
+          <div class="tag">Donation confirmed</div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <a class="btn primary" href="location.html">Donate again</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="container main">
+    <div class="panel success-main">
+      <div class="success-icon">✓</div>
+      <h1>Thank you for your donation</h1>
+      <p class="sub" id="successSub">Your request has been submitted. The NGO/volunteer will get in touch with you shortly.</p>
+      <div class="request-id-pill" id="requestIdPill">Request: <span id="requestId">—</span></div>
+
+      <!-- Donation summary receipt -->
+      <div class="donation-summary-card" id="donationSummaryCard">
+        <h2 class="donation-summary-title">Donation summary</h2>
+        <div class="donation-summary-list">
+          <div class="donation-summary-row">
+            <div class="donation-summary-icon">📦</div>
+            <div class="donation-summary-body">
+              <div class="donation-summary-label">Item category</div>
+              <div class="donation-summary-value" id="sumCategory">—</div>
+            </div>
+          </div>
+          <div class="donation-summary-row">
+            <div class="donation-summary-icon">🏷️</div>
+            <div class="donation-summary-body">
+              <div class="donation-summary-label">Item name</div>
+              <div class="donation-summary-value" id="sumName">—</div>
+            </div>
+          </div>
+          <div class="donation-summary-row">
+            <div class="donation-summary-icon">#</div>
+            <div class="donation-summary-body">
+              <div class="donation-summary-label">Quantity</div>
+              <div class="donation-summary-value" id="sumQuantity">—</div>
+            </div>
+          </div>
+          <div class="donation-summary-row">
+            <div class="donation-summary-icon">⭐</div>
+            <div class="donation-summary-body">
+              <div class="donation-summary-label">Condition</div>
+              <div class="donation-summary-value" id="sumCondition">—</div>
+            </div>
+          </div>
+          <div class="donation-summary-row">
+            <div class="donation-summary-icon">🚚</div>
+            <div class="donation-summary-body">
+              <div class="donation-summary-label">Donation mode</div>
+              <div class="donation-summary-value" id="sumMode">—</div>
+            </div>
+          </div>
+          <div class="donation-summary-row">
+            <div class="donation-summary-icon">📅</div>
+            <div class="donation-summary-body">
+              <div class="donation-summary-label">Scheduled date & time</div>
+              <div class="donation-summary-value" id="sumDateTime">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-actions">
+        <a class="btn primary" href="certificate.html" id="certificateLink">View certificate</a>
+        <a class="btn primary" href="location.html">Make another donation</a>
+        <a class="btn link" href="login.html">Back to home</a>
+      </div>
+      <script>
+        if (!sessionStorage.getItem('sevasetu_certificate')) {
+          var cl = document.getElementById('certificateLink');
+          if (cl) cl.style.display = 'none';
+        }
+      </script>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const params = new URLSearchParams(location.search);
+      const requestId = params.get("request_id") || "";
+      const mode = (params.get("mode") || "").toLowerCase();
+      document.getElementById("requestId").textContent = requestId || "—";
+      const sub = document.getElementById("successSub");
+      if (mode === "pickup") {
+        sub.textContent = "A volunteer will contact you to schedule pickup at your address. Keep your phone handy.";
+      } else if (mode === "dropoff") {
+        sub.textContent = "Please take your donation to the NGO at your convenience. They will confirm receipt.";
+      }
+
+      // Donation summary from sessionStorage
+      const preferredTimeLabels = {
+        "asap": "As soon as possible",
+        "morning": "Morning (8 AM – 12 PM)",
+        "afternoon": "Afternoon (12 PM – 5 PM)",
+        "evening": "Evening (5 PM – 8 PM)",
+        "custom": "To be specified"
+      };
+      function formatDate(ymd) {
+        if (!ymd) return "—";
+        const parts = ymd.split("-");
+        if (parts.length !== 3) return ymd;
+        const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        const m = months[parseInt(parts[1], 10) - 1] || parts[1];
+        return m + " " + parseInt(parts[2], 10) + ", " + parts[0];
+      }
+      const raw = sessionStorage.getItem("sevasetu_certificate");
+      let cert = null;
+      if (raw) { try { cert = JSON.parse(raw); } catch (e) {} }
+      const summaryCard = document.getElementById("donationSummaryCard");
+      if (!cert || !cert.items || cert.items.length === 0) {
+        if (summaryCard) summaryCard.classList.add("hide");
+      } else {
+        const items = cert.items;
+        const first = items[0];
+        const totalQty = items.reduce(function (acc, it) { return acc + (parseInt(it.quantity, 10) || 1); }, 0);
+        const categories = [...new Set(items.map(function (it) { return it.item_category || "—"; }))];
+        const names = items.map(function (it) { return it.item_name || it.item_category || "—"; });
+        const conditions = [...new Set(items.map(function (it) { return it.condition || "—"; }))];
+        document.getElementById("sumCategory").textContent = categories.length === 1 ? categories[0] : categories.join(", ");
+        document.getElementById("sumName").textContent = items.length === 1 ? names[0] : names.slice(0, 2).join(", ") + (items.length > 2 ? " +" + (items.length - 2) + " more" : "");
+        document.getElementById("sumQuantity").textContent = totalQty === 1 ? "1 item" : totalQty + " items";
+        document.getElementById("sumCondition").textContent = conditions.length === 1 ? conditions[0] : conditions.join(", ");
+        const modeDisplay = (cert.mode || mode || "").toLowerCase();
+        document.getElementById("sumMode").textContent = modeDisplay === "pickup" ? "Pickup" : modeDisplay === "dropoff" ? "Drop off" : cert.mode || "—";
+        const dateStr = formatDate(cert.completed_at);
+        const timeStr = preferredTimeLabels[cert.preferred_time] || (cert.preferred_time ? cert.preferred_time : "To be confirmed");
+        document.getElementById("sumDateTime").textContent = dateStr + " • " + timeStr;
+      }
+    })();
+  </script>
+</body>
+</html>

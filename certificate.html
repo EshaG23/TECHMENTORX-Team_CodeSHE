@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificate of Contribution — SevaSetu</title>
+  <style>
+    :root{
+      --green:#0ea87a;
+      --green2:#19c08f;
+      --gold:#c9a227;
+      --gold-light:#e5c547;
+      --white:#fff;
+      --marble:#fafbfc;
+      --text:#1a1a1a;
+      --muted:#555;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Georgia,'Times New Roman',serif;background:#e8e8e8;color:var(--text);min-height:100vh;padding:24px;display:flex;flex-direction:column;align-items:center}
+    .cert-wrap{position:relative;max-width:640px;width:100%}
+    .cert{
+      position:relative;
+      background:linear-gradient(135deg, var(--marble) 0%, #f5f6f7 50%, var(--marble) 100%);
+      background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(135deg, #fafbfc 0%, #f2f3f5 100%);
+      border:2px solid var(--green);
+      padding:0 48px 48px;
+      box-shadow:0 20px 60px rgba(14,168,122,.2);
+      overflow:hidden;
+    }
+    .cert::before,.cert::after{
+      content:'';
+      position:absolute;
+      top:0;bottom:0;
+      width:56px;
+      background:var(--green);
+      border:1px solid var(--green2);
+      opacity:.95;
+    }
+    .cert::before{left:0;border-radius:0 12px 12px 0;clip-path:ellipse(80% 70% at 20% 50%)}
+    .cert::after{right:0;border-radius:12px 0 0 12px;clip-path:ellipse(80% 70% at 80% 50%)}
+    .cert-inner{position:relative;z-index:1;padding:32px 16px 24px}
+    .seal{
+      width:64px;height:64px;
+      margin:0 auto 16px;
+      background:radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold));
+      border:3px solid var(--gold);
+      border-radius:50%;
+      box-shadow:0 4px 12px rgba(201,162,39,.5), inset 0 2px 4px rgba(255,255,255,.4);
+      display:flex;align-items:center;justify-content:center;
+      font-size:28px;
+    }
+    .cert-title{text-align:center;margin-bottom:8px}
+    .cert-title .main{font-size:32px;font-weight:800;letter-spacing:2px;color:var(--text);margin:0}
+    .cert-title .sub{font-size:18px;font-weight:700;letter-spacing:1px;color:var(--text);margin:4px 0 0}
+    .presented{text-align:center;font-size:15px;color:var(--text);margin:28px 0 6px}
+    .name-line{
+      border:none;
+      border-bottom:2px solid var(--text);
+      background:transparent;
+      width:100%;
+      max-width:400px;
+      margin:0 auto 8px;
+      display:block;
+      font-family:Georgia,serif;
+      font-size:22px;
+      font-weight:700;
+      text-align:center;
+      color:var(--text);
+      padding:4px 8px;
+    }
+    .name-line:focus{outline:none;border-bottom-color:var(--green)}
+    .details-block{text-align:center;font-size:13px;color:var(--muted);margin:16px auto 24px;max-width:420px;line-height:1.6}
+    .details-block span{display:inline-block;margin:2px 8px 2px 0}
+    .appreciation{
+      text-align:center;
+      font-size:16px;
+      line-height:1.7;
+      color:var(--text);
+      margin:20px 0 32px;
+      font-style:italic;
+      max-width:520px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .appreciation .line1{margin-bottom:8px}
+    .corner{position:absolute;width:32px;height:32px;border:2px solid var(--green);z-index:2}
+    .corner-tl{top:12px;left:12px;border-right:none;border-bottom:none;border-radius:4px 0 0 0}
+    .corner-br{bottom:12px;right:12px;border-left:none;border-top:none;border-radius:0 0 4px 4px}
+    .actions{text-align:center;margin-top:24px}
+    .btn{border:none;cursor:pointer;border-radius:14px;padding:12px 24px;font-weight:700;font-size:15px;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;text-decoration:none;display:inline-block}
+    .no-data{text-align:center;padding:40px;color:var(--muted);max-width:480px}
+    .no-data a{color:var(--green);font-weight:700}
+    @media print{
+      body{background:#fff;padding:0}
+      .cert{box-shadow:none}
+      .actions{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div id="certWrap" class="cert-wrap">
+    <div id="certContainer" class="cert">
+      <span class="corner corner-tl"></span>
+      <span class="corner corner-br"></span>
+      <div class="cert-inner">
+        <div class="seal">🏅</div>
+        <div class="cert-title">
+          <h1 class="main">CERTIFICATE</h1>
+          <p class="sub">OF CONTRIBUTION</p>
+        </div>
+        <p class="presented">THIS CERTIFICATE IS PRESENTED TO :</p>
+        <div class="name-line" id="certName" contenteditable="false">—</div>
+        <div class="details-block" id="certDetails"></div>
+        <div class="appreciation">
+          <p class="line1" id="appreciate1">Thank you for your generous contribution to our community.</p>
+          <p class="line2" id="appreciate2">Your kindness and dedication to giving have made a real difference in the lives of those in need.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="noData" class="no-data" style="display:none">
+    <p>No certificate data found. Complete a donation handover from the pickup page to generate your certificate.</p>
+    <a href="landing.html">Back to home</a>
+  </div>
+  <div class="actions" id="actions">
+    <button type="button" class="btn" id="downloadBtn">Download certificate</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    const certName = document.getElementById('certName');
+    const certDetails = document.getElementById('certDetails');
+    const appreciate1 = document.getElementById('appreciate1');
+    const appreciate2 = document.getElementById('appreciate2');
+    const certContainer = document.getElementById('certContainer');
+    const certWrap = document.getElementById('certWrap');
+    const noData = document.getElementById('noData');
+    const actions = document.getElementById('actions');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    const raw = sessionStorage.getItem('sevasetu_certificate');
+    let data = null;
+    if (raw) {
+      try { data = JSON.parse(raw); } catch (e) {}
+    }
+
+    const appreciateLines = [
+      { l1: 'Thank you for your generous contribution to our community.', l2: 'Your kindness and dedication to giving have made a real difference in the lives of those in need.' },
+      { l1: 'We appreciate your commitment to making the world a better place.', l2: 'Your donation reflects the best of humanity—thank you for being a force for good.' },
+      { l1: 'Your contribution has touched lives and strengthened our mission.', l2: 'Thank you for choosing to give; you are an inspiration to us all.' }
+    ];
+    function pickAppreciation() {
+      return appreciateLines[Math.floor(Math.random() * appreciateLines.length)];
+    }
+
+    if (!data) {
+      certWrap.style.display = 'none';
+      actions.style.display = 'none';
+      noData.style.display = 'block';
+    } else {
+      certName.textContent = data.donor_name || 'Donor';
+      certName.removeAttribute('contenteditable');
+
+      const ngo = data.ngo_name || '—';
+      const city = data.city || '—';
+      const date = data.completed_at || '—';
+      const items = data.items || [];
+      const itemsText = items.length
+        ? items.map(function(it) { return (it.item_name || it.item_category) + ' × ' + (it.quantity || 1); }).join(', ')
+        : '—';
+      certDetails.innerHTML = 'In recognition of a verified donation handover to <strong>' + ngo + '</strong> (' + city + ') on ' + date + '. Items donated: ' + itemsText + '.';
+
+      const msg = pickAppreciation();
+      appreciate1.textContent = msg.l1;
+      appreciate2.textContent = msg.l2;
+    }
+
+    downloadBtn.addEventListener('click', function () {
+      if (!data) return;
+      const el = document.getElementById('certContainer');
+      const opt = {
+        margin: 12,
+        filename: 'certificate.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = 'Generating PDF…';
+      html2pdf().set(opt).from(el).save().then(function () {
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = 'Download certificate';
+      }).catch(function () {
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = 'Download certificate';
+      });
+    });
+  </script>
+</body>
+</html>

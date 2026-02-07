@@ -21,6 +21,8 @@ const itemsList = document.getElementById('itemsList');
 const itemsCount = document.getElementById('itemsCount');
 const continueBtn = document.getElementById('continueBtn');
 
+const itemNameInput = document.getElementById('itemName');
+
 // State
 let itemsCatalog = null;
 let addedItems = [];
@@ -45,30 +47,113 @@ async function init() {
   }
 }
 
-// Populate category dropdown
+// Category icons mapping
+const categoryIcons = {
+  'Food': '🍔',
+  'Clothes': '👕',
+  'Toys': '🧸',
+  'Essentials': '🧴'
+};
+
+// Category class mapping
+const categoryClasses = {
+  'Food': 'food',
+  'Clothes': 'clothes',
+  'Toys': 'toys',
+  'Essentials': 'essentials'
+};
+
+// Populate category cards
 function populateCategories() {
   if (!itemsCatalog || !itemsCatalog.categories) return;
   
-  categorySelect.innerHTML = '<option value="">Select a category</option>';
+  const categoryGrid = document.getElementById('categoryGrid');
+  categoryGrid.innerHTML = '';
+  
   itemsCatalog.categories.forEach(category => {
-    const option = document.createElement('option');
-    option.value = category;
-    option.textContent = category;
-    categorySelect.appendChild(option);
+    const card = document.createElement('div');
+    card.className = `category-card ${categoryClasses[category] || ''}`;
+    card.dataset.category = category;
+    
+    const icon = categoryIcons[category] || '📦';
+    
+    card.innerHTML = `
+      <div class="category-icon">${icon}</div>
+      <div class="category-name">${category}</div>
+    `;
+    
+    card.addEventListener('click', () => selectCategory(category, card));
+    categoryGrid.appendChild(card);
   });
 }
 
-// Populate condition dropdown
+// Select category
+function selectCategory(category, cardElement) {
+  // Remove active class from all cards
+  document.querySelectorAll('.category-card').forEach(card => {
+    card.classList.remove('active');
+  });
+  
+  // Add active class to selected card
+  cardElement.classList.add('active');
+  
+  // Set hidden input value
+  categorySelect.value = category;
+  
+  // Add visual feedback
+  cardElement.style.transform = 'scale(0.98)';
+  setTimeout(() => {
+    cardElement.style.transform = '';
+  }, 150);
+}
+
+// Condition badge colors
+const conditionBadges = {
+  'Low': 'low',
+  'Medium': 'medium',
+  'High': 'high'
+};
+
+// Populate condition cards
 function populateConditions() {
   if (!itemsCatalog || !itemsCatalog.condition_levels) return;
   
-  conditionSelect.innerHTML = '<option value="">Select condition</option>';
+  const conditionGrid = document.getElementById('conditionGrid');
+  conditionGrid.innerHTML = '';
+  
   itemsCatalog.condition_levels.forEach(condition => {
-    const option = document.createElement('option');
-    option.value = condition;
-    option.textContent = condition;
-    conditionSelect.appendChild(option);
+    const card = document.createElement('div');
+    card.className = `condition-card ${conditionBadges[condition] || ''}`;
+    card.dataset.condition = condition;
+    
+    card.innerHTML = `
+      <span class="condition-badge"></span>
+      ${condition}
+    `;
+    
+    card.addEventListener('click', () => selectCondition(condition, card));
+    conditionGrid.appendChild(card);
   });
+}
+
+// Select condition
+function selectCondition(condition, cardElement) {
+  // Remove active class from all cards
+  document.querySelectorAll('.condition-card').forEach(card => {
+    card.classList.remove('active');
+  });
+  
+  // Add active class to selected card
+  cardElement.classList.add('active');
+  
+  // Set hidden input value
+  conditionSelect.value = condition;
+  
+  // Add visual feedback
+  cardElement.style.transform = 'scale(0.95)';
+  setTimeout(() => {
+    cardElement.style.transform = '';
+  }, 150);
 }
 
 // Show error message
@@ -196,10 +281,19 @@ donationForm.addEventListener('submit', async (e) => {
   addItemBtn.disabled = true;
   addItemBtn.textContent = 'Adding...';
   
+  const itemName = itemNameInput.value.trim();
+  
+  if (!itemName) {
+    showError('Please enter an item name.');
+    addItemBtn.disabled = false;
+    addItemBtn.textContent = 'Add Item +';
+    return;
+  }
+  
   // Get form data
   const itemData = {
     item_category: categorySelect.value,
-    item_name: document.getElementById('itemName').value.trim(),
+    item_name: itemName,
     quantity: parseInt(document.getElementById('quantity').value),
     condition: conditionSelect.value
   };
@@ -224,6 +318,20 @@ donationForm.addEventListener('submit', async (e) => {
   
   // Reset form
   donationForm.reset();
+  
+  // Reset category and condition selections
+  document.querySelectorAll('.category-card').forEach(card => {
+    card.classList.remove('active');
+  });
+  document.querySelectorAll('.condition-card').forEach(card => {
+    card.classList.remove('active');
+  });
+  categorySelect.value = '';
+  conditionSelect.value = '';
+  
+  // Reset quantity
+  document.getElementById('quantity').value = 1;
+  
   addItemBtn.disabled = false;
   addItemBtn.textContent = 'Add Item +';
   
@@ -249,6 +357,32 @@ continueBtn.addEventListener('click', () => {
   });
   
   window.location.href = `pickup.html?${params.toString()}`;
+});
+
+// Quantity controls
+const quantityInput = document.getElementById('quantity');
+const quantityMinus = document.getElementById('quantityMinus');
+const quantityPlus = document.getElementById('quantityPlus');
+
+quantityMinus.addEventListener('click', () => {
+  const current = parseInt(quantityInput.value) || 1;
+  if (current > 1) {
+    quantityInput.value = current - 1;
+    quantityInput.dispatchEvent(new Event('input'));
+  }
+});
+
+quantityPlus.addEventListener('click', () => {
+  const current = parseInt(quantityInput.value) || 1;
+  quantityInput.value = current + 1;
+  quantityInput.dispatchEvent(new Event('input'));
+});
+
+// Prevent negative numbers
+quantityInput.addEventListener('input', () => {
+  if (parseInt(quantityInput.value) < 1) {
+    quantityInput.value = 1;
+  }
 });
 
 // Initialize on page load

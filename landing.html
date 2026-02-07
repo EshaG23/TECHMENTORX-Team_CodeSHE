@@ -98,6 +98,89 @@
       display:flex; align-items:center; gap:12px;
     }
 
+    /* Profile button (shown when logged in) */
+    .profile-wrap{
+      position:relative;
+    }
+    .profile-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px 6px 6px;
+      border:none;
+      border-radius:999px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      color:var(--text);
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+      transition:box-shadow .15s ease, background .15s ease;
+    }
+    .profile-btn:hover{
+      background:var(--mint);
+      box-shadow:0 4px 12px rgba(14,168,122,.12);
+    }
+    .profile-avatar{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--green), var(--green2));
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-size:12px;
+      font-weight:800;
+      flex-shrink:0;
+    }
+    .profile-name{
+      max-width:120px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .profile-dropdown{
+      position:absolute;
+      top:100%;
+      right:0;
+      margin-top:6px;
+      min-width:200px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      padding:8px 0;
+      z-index:100;
+      display:none;
+    }
+    .profile-dropdown.open{
+      display:block;
+    }
+    .profile-dropdown .email{
+      padding:10px 14px;
+      font-size:12px;
+      color:var(--muted);
+      border-bottom:1px solid var(--border);
+    }
+    .profile-dropdown .logout{
+      display:block;
+      width:100%;
+      padding:10px 14px;
+      text-align:left;
+      border:none;
+      background:none;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      color:var(--muted);
+      transition:background .12s ease, color .12s ease;
+    }
+    .profile-dropdown .logout:hover{
+      background:rgba(14,168,122,.08);
+      color:var(--green);
+    }
+
     .btn{
       border:none; cursor:pointer;
       border-radius: 14px;
@@ -352,7 +435,16 @@
       </div>
 
       <div class="nav-actions">
-        <button class="btn link" onclick="openLogin()">Login</button>
+        <div class="profile-wrap" id="profileWrap">
+          <button type="button" class="profile-btn" id="profileBtn" aria-label="Profile">
+            <span class="profile-avatar" id="profileAvatar">?</span>
+            <span class="profile-name" id="profileName">User</span>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="email" id="profileEmail"></div>
+            <button type="button" class="logout" onclick="openLogin()">Log out</button>
+          </div>
+        </div>
         <button class="btn primary" onclick="goToMap()">Continue</button>
       </div>
     </div>
@@ -485,11 +577,39 @@
       return true;
     }
 
-    // Initialize - check authentication
+    // Initialize - check authentication and show profile
     if (!checkAuth()) {
       // Redirect will happen, stop execution
     } else {
       document.getElementById("yr").textContent = new Date().getFullYear();
+      initProfileButton();
+    }
+
+    function initProfileButton() {
+      const userData = localStorage.getItem('sevasetu_user');
+      if (!userData) return;
+      try {
+        const user = JSON.parse(userData);
+        const name = user.name || 'User';
+        const email = user.email || '';
+        const initial = (name.charAt(0) || '?').toUpperCase();
+        document.getElementById('profileAvatar').textContent = initial;
+        document.getElementById('profileName').textContent = name;
+        document.getElementById('profileEmail').textContent = email;
+      } catch (e) {
+        document.getElementById('profileAvatar').textContent = '?';
+        document.getElementById('profileName').textContent = 'User';
+      }
+      // Toggle dropdown on profile button click
+      const btn = document.getElementById('profileBtn');
+      const dropdown = document.getElementById('profileDropdown');
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdown.classList.toggle('open');
+      });
+      document.addEventListener('click', function() {
+        dropdown.classList.remove('open');
+      });
     }
 
     function goToMap(){
