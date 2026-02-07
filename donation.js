@@ -5,6 +5,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const ngoId = urlParams.get('ngo_id') || '';
 const ngoName = urlParams.get('ngo_name') || '';
 const city = urlParams.get('city') || '';
+const lat = urlParams.get('lat') || '';
+const lng = urlParams.get('lng') || '';
 
 // UI elements
 const ngoNameEl = document.getElementById('ngoName');
@@ -13,10 +15,15 @@ const ngoCityEl = document.getElementById('ngoCity');
 const categorySelect = document.getElementById('itemCategory');
 const conditionSelect = document.getElementById('condition');
 const donationForm = document.getElementById('donationForm');
-const submitBtn = document.getElementById('submitBtn');
+const addItemBtn = document.getElementById('addItemBtn');
+const itemsListCard = document.getElementById('itemsListCard');
+const itemsList = document.getElementById('itemsList');
+const itemsCount = document.getElementById('itemsCount');
+const continueBtn = document.getElementById('continueBtn');
 
 // State
 let itemsCatalog = null;
+let addedItems = [];
 
 // Initialize page
 async function init() {
@@ -99,22 +106,98 @@ function showSuccess(message) {
   
   setTimeout(() => {
     successDiv.remove();
-  }, 5000);
+  }, 3000);
 }
 
-// Handle form submission
+// Add item to list
+function addItemToList(item) {
+  addedItems.push(item);
+  updateItemsList();
+  updateItemsCount();
+  showSuccess(`✅ Added: ${item.item_name} (${item.quantity} ${item.item_category})`);
+}
+
+// Remove item from list
+function removeItemFromList(index) {
+  const removedItem = addedItems[index];
+  addedItems.splice(index, 1);
+  updateItemsList();
+  updateItemsCount();
+  showSuccess(`Removed: ${removedItem.item_name}`);
+}
+
+// Update items list display
+function updateItemsList() {
+  itemsList.innerHTML = '';
+  
+  if (addedItems.length === 0) {
+    itemsListCard.style.display = 'none';
+    continueBtn.style.display = 'none';
+    return;
+  }
+  
+  itemsListCard.style.display = 'block';
+  continueBtn.style.display = 'block';
+  
+  addedItems.forEach((item, index) => {
+    const itemRow = document.createElement('div');
+    itemRow.className = 'item-row';
+    
+    itemRow.innerHTML = `
+      <div class="item-info">
+        <div class="item-name">${escapeHtml(item.item_name)}</div>
+        <div class="item-details">
+          <div class="item-detail">
+            <span class="label">Category:</span>
+            <span class="value">${escapeHtml(item.item_category)}</span>
+          </div>
+          <div class="item-detail">
+            <span class="label">Quantity:</span>
+            <span class="value">${item.quantity}</span>
+          </div>
+          <div class="item-detail">
+            <span class="label">Condition:</span>
+            <span class="value">${escapeHtml(item.condition)}</span>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="remove-btn" data-index="${index}">Remove</button>
+    `;
+    
+    // Add remove button event listener
+    const removeBtn = itemRow.querySelector('.remove-btn');
+    removeBtn.addEventListener('click', () => removeItemFromList(index));
+    
+    itemsList.appendChild(itemRow);
+  });
+}
+
+// Update items count
+function updateItemsCount() {
+  itemsCount.textContent = addedItems.length;
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+// Handle form submission (Add Item)
 donationForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   
   // Disable submit button
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Submitting...';
+  addItemBtn.disabled = true;
+  addItemBtn.textContent = 'Adding...';
   
   // Get form data
-  const formData = {
-    ngo_id: ngoId,
-    ngo_name: ngoName,
-    city: city,
+  const itemData = {
     item_category: categorySelect.value,
     item_name: document.getElementById('itemName').value.trim(),
     quantity: parseInt(document.getElementById('quantity').value),
@@ -122,43 +205,51 @@ donationForm.addEventListener('submit', async (e) => {
   };
   
   // Validate
-  if (!formData.item_category || !formData.item_name || !formData.quantity || !formData.condition) {
+  if (!itemData.item_category || !itemData.item_name || !itemData.quantity || !itemData.condition) {
     showError('Please fill in all required fields.');
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Donation →';
+    addItemBtn.disabled = false;
+    addItemBtn.textContent = 'Add Item +';
     return;
   }
   
-  if (formData.quantity < 1) {
+  if (itemData.quantity < 1) {
     showError('Quantity must be at least 1.');
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Donation →';
+    addItemBtn.disabled = false;
+    addItemBtn.textContent = 'Add Item +';
     return;
   }
   
-  // Submit donation (you can extend this to actually save to backend)
-  try {
-    // For now, just show success message
-    // In a real app, you would POST to an API endpoint
-    console.log('Donation data:', formData);
-    
-    showSuccess(`✅ Donation submitted successfully! Category: ${formData.item_category}, Item: ${formData.item_name}, Quantity: ${formData.quantity}, Condition: ${formData.condition}`);
-    
-    // Reset form after a delay
-    setTimeout(() => {
-      donationForm.reset();
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Donation →';
-    }, 2000);
-    
-  } catch (error) {
-    console.error('Error submitting donation:', error);
-    showError('Failed to submit donation. Please try again.');
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Donation →';
+  // Add item to list
+  addItemToList(itemData);
+  
+  // Reset form
+  donationForm.reset();
+  addItemBtn.disabled = false;
+  addItemBtn.textContent = 'Add Item +';
+  
+  // Scroll to items list
+  itemsListCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+// Handle continue to scheduling
+continueBtn.addEventListener('click', () => {
+  if (addedItems.length === 0) {
+    showError('Please add at least one item before continuing.');
+    return;
   }
+  
+  // Prepare data to pass to scheduling page
+  const params = new URLSearchParams({
+    ngo_id: ngoId,
+    ngo_name: ngoName,
+    city: city,
+    lat: lat,
+    lng: lng,
+    items: JSON.stringify(addedItems)
+  });
+  
+  window.location.href = `pickup.html?${params.toString()}`;
 });
 
 // Initialize on page load
 init();
-

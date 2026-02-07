@@ -38,8 +38,8 @@
 
       <!-- Donation Form -->
       <div class="card form-card">
-        <div class="card-title">Donation Details</div>
-        <p class="sub">Fill in the details about the items you want to donate</p>
+        <div class="card-title">Add Donation Items</div>
+        <p class="sub">Fill in the details about each item you want to donate. You can add multiple items.</p>
 
         <form id="donationForm">
           <!-- Category Selection -->
@@ -83,13 +83,26 @@
             </select>
           </div>
 
-          <!-- Submit Button -->
+          <!-- Add Item Button -->
           <div class="form-actions">
-            <button type="submit" class="btn primary" id="submitBtn">
-              Submit Donation →
+            <button type="submit" class="btn primary" id="addItemBtn">
+              Add Item +
             </button>
           </div>
         </form>
+      </div>
+
+      <!-- Added Items List -->
+      <div class="card items-list-card" id="itemsListCard" style="display: none;">
+        <div class="card-title">Added Items (<span id="itemsCount">0</span>)</div>
+        <div class="items-list" id="itemsList">
+          <!-- Items will be added here dynamically -->
+        </div>
+        <div class="continue-section">
+          <button type="button" class="btn primary large" id="continueBtn" style="display: none;">
+            Continue to Scheduling →
+          </button>
+        </div>
       </div>
     </div>
   </main>
