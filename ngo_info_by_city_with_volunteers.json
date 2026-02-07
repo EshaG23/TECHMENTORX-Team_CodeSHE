@@ -1,0 +1,312 @@
+{
+  "Nagpur": [
+    {
+      "ngo_id": "N001",
+      "name": "Akshaya Patra Foundation",
+      "latitude": 21.145196,
+      "longitude": 79.088724,
+      "volunteer": {
+        "volunteer_id": "V001",
+        "name": "Tanvi Sharma",
+        "phone": "+91 97550 22100",
+        "role": "Volunteer Coordinator"
+      }
+    },
+    {
+      "ngo_id": "N002",
+      "name": "Sandnya Sanwardhan Sanstha",
+      "latitude": 21.138466,
+      "longitude": 79.098775,
+      "volunteer": {
+        "volunteer_id": "V002",
+        "name": "Rohan Patil",
+        "phone": "+91 712 2220713",
+        "role": "Volunteer Liaison"
+      }
+    },
+    {
+      "ngo_id": "N003",
+      "name": "Vivekanand Charitable Trust",
+      "latitude": 21.15022,
+      "longitude": 79.083924,
+      "volunteer": {
+        "volunteer_id": "V003",
+        "name": "Meera Joshi",
+        "phone": "+91 712 2550344",
+        "role": "Community Outreach"
+      }
+    },
+    {
+      "ngo_id": "N004",
+      "name": "Paryavaran Pratham",
+      "latitude": 21.138666,
+      "longitude": 79.097843,
+      "volunteer": {
+        "volunteer_id": "V004",
+        "name": "Arjun Kulkarni",
+        "phone": "+91 712 2222508",
+        "role": "Environmental Projects"
+      }
+    },
+    {
+      "ngo_id": "N005",
+      "name": "MOHAN Foundation Nagpur",
+      "latitude": 21.150017,
+      "longitude": 79.092024,
+      "volunteer": {
+        "volunteer_id": "V005",
+        "name": "Priya Nair",
+        "phone": "+91 712 3275970",
+        "role": "Organ Donation Awareness"
+      }
+    }
+  ],
+  "Mumbai": [
+    {
+      "ngo_id": "N006",
+      "name": "Child Rights and You (CRY)",
+      "latitude": 19.056494,
+      "longitude": 72.876772,
+      "volunteer": {
+        "volunteer_id": "V006",
+        "name": "Sahil Desai",
+        "phone": "+91 77380 54973",
+        "role": "Child Rights Volunteer"
+      }
+    },
+    {
+      "ngo_id": "N007",
+      "name": "Childline India (Mumbai Office)",
+      "latitude": 19.08916,
+      "longitude": 72.895056,
+      "volunteer": {
+        "volunteer_id": "V007",
+        "name": "Anika Rao",
+        "phone": "1098 (toll free helpline)",
+        "role": "Emergency Outreach"
+      }
+    },
+    {
+      "ngo_id": "N008",
+      "name": "Goonj (Mumbai Team)",
+      "latitude": 19.068312,
+      "longitude": 72.887074,
+      "volunteer": {
+        "volunteer_id": "V008",
+        "name": "Kabir Singh",
+        "phone": "+91 77380 54973",
+        "role": "Resource Mobilization"
+      }
+    },
+    {
+      "ngo_id": "N009",
+      "name": "Environmentalist Foundation of India (Mumbai)",
+      "latitude": 19.082061,
+      "longitude": 72.870549,
+      "volunteer": {
+        "volunteer_id": "V009",
+        "name": "Leela Iyer",
+        "phone": "+91 9000001234",
+        "role": "Eco Volunteer"
+      }
+    },
+    {
+      "ngo_id": "N010",
+      "name": "Akhil Bhartiya Marwari Mahila Sammelan",
+      "latitude": 19.094079,
+      "longitude": 72.874714,
+      "volunteer": {
+        "volunteer_id": "V010",
+        "name": "Sana Khan",
+        "phone": "+91 22 28090344",
+        "role": "Community Support"
+      }
+    }
+  ],
+  "Kolkata": [
+    {
+      "ngo_id": "N011",
+      "name": "Lifeline Foundation",
+      "latitude": 22.589162,
+      "longitude": 88.365916,
+      "volunteer": {
+        "volunteer_id": "V011",
+        "name": "Ananya Sen",
+        "phone": "+91 33 4044 7437",
+        "role": "Counselling Support"
+      }
+    },
+    {
+      "ngo_id": "N012",
+      "name": "Child Rights and You (CRY Kolkata)",
+      "latitude": 22.590609,
+      "longitude": 88.369223,
+      "volunteer": {
+        "volunteer_id": "V012",
+        "name": "Ritika Basu",
+        "phone": "+91 98765 43210",
+        "role": "Child Welfare"
+      }
+    },
+    {
+      "ngo_id": "N013",
+      "name": "Grih Kalyan Kendra (Kolkata Centre)",
+      "latitude": 22.587251,
+      "longitude": 88.35899,
+      "volunteer": {
+        "volunteer_id": "V013",
+        "name": "Soumya Dutta",
+        "phone": "+91 11 24616218",
+        "role": "Welfare Coordination"
+      }
+    },
+    {
+      "ngo_id": "N014",
+      "name": "MOHAN Foundation Kolkata",
+      "latitude": 22.587975,
+      "longitude": 88.36724,
+      "volunteer": {
+        "volunteer_id": "V014",
+        "name": "Dev Sen",
+        "phone": "+91 98300 12345",
+        "role": "Organ Donation Outreach"
+      }
+    },
+    {
+      "ngo_id": "N015",
+      "name": "Akshaya Patra Kolkata",
+      "latitude": 22.592285,
+      "longitude": 88.371119,
+      "volunteer": {
+        "volunteer_id": "V015",
+        "name": "Priyanka Ghosh",
+        "phone": "+91 98765 67890",
+        "role": "Meal Programme"
+      }
+    }
+  ],
+  "Bangalore": [
+    {
+      "ngo_id": "N016",
+      "name": "Make A Difference (MAD Bangalore)",
+      "latitude": 12.96141,
+      "longitude": 77.588794,
+      "volunteer": {
+        "volunteer_id": "V016",
+        "name": "Karthik Rao",
+        "phone": "+91 80 2345 6789",
+        "role": "Volunteer Lead"
+      }
+    },
+    {
+      "ngo_id": "N017",
+      "name": "Samarthanam Trust For The Disabled",
+      "latitude": 12.984071,
+      "longitude": 77.577451,
+      "volunteer": {
+        "volunteer_id": "V017",
+        "name": "Deepa Nair",
+        "phone": "+91 80 5094 8258",
+        "role": "Disability Support"
+      }
+    },
+    {
+      "ngo_id": "N018",
+      "name": "Yashodha Education & Charitable Trust",
+      "latitude": 12.982598,
+      "longitude": 77.595617,
+      "volunteer": {
+        "volunteer_id": "V018",
+        "name": "Arun Kumar",
+        "phone": "+91 80 5094 8258",
+        "role": "Education Outreach"
+      }
+    },
+    {
+      "ngo_id": "N019",
+      "name": "Environmentalist Foundation of India (Bangalore)",
+      "latitude": 12.977433,
+      "longitude": 77.590967,
+      "volunteer": {
+        "volunteer_id": "V019",
+        "name": "Sneha Pai",
+        "phone": "+91 90000 43210",
+        "role": "Environmental Projects"
+      }
+    },
+    {
+      "ngo_id": "N020",
+      "name": "MOHAN Foundation Bangalore",
+      "latitude": 12.953088,
+      "longitude": 77.598434,
+      "volunteer": {
+        "volunteer_id": "V020",
+        "name": "Rahul Menon",
+        "phone": "+91 9886783008",
+        "role": "Organ Donation Awareness"
+      }
+    }
+  ],
+  "Delhi": [
+    {
+      "ngo_id": "N021",
+      "name": "Grih Kalyan Kendra (Lodhi Road)",
+      "latitude": 28.723945,
+      "longitude": 77.11361,
+      "volunteer": {
+        "volunteer_id": "V021",
+        "name": "Priya Ahuja",
+        "phone": "+91 11 24616218",
+        "role": "Welfare Coordinator"
+      }
+    },
+    {
+      "ngo_id": "N022",
+      "name": "Bal Sahyog",
+      "latitude": 28.688634,
+      "longitude": 77.09779,
+      "volunteer": {
+        "volunteer_id": "V022",
+        "name": "Amit Verma",
+        "phone": "+91 98101 37469",
+        "role": "Child Services"
+      }
+    },
+    {
+      "ngo_id": "N023",
+      "name": "Child Rights and You (CRY Delhi)",
+      "latitude": 28.69343,
+      "longitude": 77.119089,
+      "volunteer": {
+        "volunteer_id": "V023",
+        "name": "Neha Gupta",
+        "phone": "+91 98765 12345",
+        "role": "Child Welfare"
+      }
+    },
+    {
+      "ngo_id": "N024",
+      "name": "Environmentalist Foundation of India (Delhi)",
+      "latitude": 28.684606,
+      "longitude": 77.094064,
+      "volunteer": {
+        "volunteer_id": "V024",
+        "name": "Salim Khan",
+        "phone": "+91 90000 54321",
+        "role": "Volunteer Outreach"
+      }
+    },
+    {
+      "ngo_id": "N025",
+      "name": "MOHAN Foundation Delhi",
+      "latitude": 28.685549,
+      "longitude": 77.092884,
+      "volunteer": {
+        "volunteer_id": "V025",
+        "name": "Ritu Singh",
+        "phone": "+91 90000 65432",
+        "role": "Organ Donation"
+      }
+    }
+  ]
+}

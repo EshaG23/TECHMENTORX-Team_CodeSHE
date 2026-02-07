@@ -1,0 +1,82 @@
+[
+  {
+    "ngo_id": "N001",
+    "name": "Helping Hands Foundation",
+    "email": "help@hhf.org",
+    "phone": "9123456780",
+    "city": "Nagpur",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N002",
+    "name": "Seva Jyoti Trust",
+    "email": "seva@sj.org",
+    "phone": "9123456781",
+    "city": "Nagpur",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N003",
+    "name": "Mumbai Care Trust",
+    "email": "care@mct.org",
+    "phone": "9123456782",
+    "city": "Mumbai",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N004",
+    "name": "Umeed Foundation",
+    "email": "umeed@uf.org",
+    "phone": "9123456783",
+    "city": "Mumbai",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N005",
+    "name": "Asha Deep Welfare",
+    "email": "asha@adw.org",
+    "phone": "9123456784",
+    "city": "Kolkata",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N006",
+    "name": "Hope Kolkata",
+    "email": "hope@hk.org",
+    "phone": "9123456785",
+    "city": "Kolkata",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N007",
+    "name": "Namma Seva Foundation",
+    "email": "namma@nsf.org",
+    "phone": "9123456786",
+    "city": "Bangalore",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N008",
+    "name": "Sahaaya Trust",
+    "email": "sahaaya@st.org",
+    "phone": "9123456787",
+    "city": "Bangalore",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N009",
+    "name": "Delhi Helping Hearts",
+    "email": "delhi@dhh.org",
+    "phone": "9123456788",
+    "city": "Delhi",
+    "password": "hashed"
+  },
+  {
+    "ngo_id": "N010",
+    "name": "Aashray Foundation",
+    "email": "aashray@af.org",
+    "phone": "9123456789",
+    "city": "Delhi",
+    "password": "hashed"
+  }
+]

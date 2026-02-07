@@ -1,0 +1,131 @@
+[
+  {
+    "user_id": "U001",
+    "name": "Rahul Sharma",
+    "email": "rahul@gmail.com",
+    "phone": "9876543210",
+    "city": "Nagpur",
+    "password": "hashed_password",
+    "points": 120,
+    "badges": [
+      "First Donation",
+      "Community Helper"
+    ]
+  },
+  {
+    "user_id": "U002",
+    "name": "Ananya Verma",
+    "email": "ananya@gmail.com",
+    "phone": "9876543211",
+    "city": "Nagpur",
+    "password": "hashed_password",
+    "points": 95,
+    "badges": [
+      "First Donation"
+    ]
+  },
+  {
+    "user_id": "U003",
+    "name": "Amit Patil",
+    "email": "amit@gmail.com",
+    "phone": "9876543212",
+    "city": "Mumbai",
+    "password": "hashed_password",
+    "points": 180,
+    "badges": [
+      "First Donation",
+      "Consistent Donor",
+      "Community Hero"
+    ]
+  },
+  {
+    "user_id": "U004",
+    "name": "Sneha Kulkarni",
+    "email": "sneha@gmail.com",
+    "phone": "9876543213",
+    "city": "Mumbai",
+    "password": "hashed_password",
+    "points": 60,
+    "badges": [
+      "First Donation"
+    ]
+  },
+  {
+    "user_id": "U005",
+    "name": "Rohit Mehta",
+    "email": "rohit@gmail.com",
+    "phone": "9876543214",
+    "city": "Delhi",
+    "password": "hashed_password",
+    "points": 210,
+    "badges": [
+      "First Donation",
+      "Community Helper",
+      "Top Donor"
+    ]
+  },
+  {
+    "user_id": "U006",
+    "name": "Pooja Singh",
+    "email": "pooja@gmail.com",
+    "phone": "9876543215",
+    "city": "Delhi",
+    "password": "hashed_password",
+    "points": 140,
+    "badges": [
+      "First Donation",
+      "Consistent Donor"
+    ]
+  },
+  {
+    "user_id": "U007",
+    "name": "Karan Joshi",
+    "email": "karan@gmail.com",
+    "phone": "9876543216",
+    "city": "Kolkata",
+    "password": "hashed_password",
+    "points": 75,
+    "badges": [
+      "First Donation"
+    ]
+  },
+  {
+    "user_id": "U008",
+    "name": "Neha Banerjee",
+    "email": "neha@gmail.com",
+    "phone": "9876543217",
+    "city": "Kolkata",
+    "password": "hashed_password",
+    "points": 160,
+    "badges": [
+      "First Donation",
+      "Community Helper"
+    ]
+  },
+  {
+    "user_id": "U009",
+    "name": "Arjun Rao",
+    "email": "arjun@gmail.com",
+    "phone": "9876543218",
+    "city": "Bangalore",
+    "password": "hashed_password",
+    "points": 200,
+    "badges": [
+      "First Donation",
+      "Community Hero"
+    ]
+  },
+  {
+    "user_id": "U010",
+    "name": "Meera Iyer",
+    "email": "meera@gmail.com",
+    "phone": "9876543219",
+    "city": "Bangalore",
+    "password": "hashed_password",
+    "points": 110,
+    "badges": [
+      "First Donation",
+      "Consistent Donor"
+    ]
+  }
+]

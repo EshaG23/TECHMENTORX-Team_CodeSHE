@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SevaSetu — Donation</title>
+
+  <link rel="stylesheet" href="donation.css" />
+</head>
+<body>
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo">❤</div>
+        <div class="brand-title">
+          <div class="name">Seva<span class="accent">Setu</span></div>
+          <div class="tag">Make a Donation</div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn link" href="location.html">Back</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="container main">
+    <div class="donation-container">
+      <!-- NGO Info Card -->
+      <div class="card ngo-card">
+        <div class="card-title">Selected NGO</div>
+        <div class="ngo-info">
+          <div class="ngo-name" id="ngoName">—</div>
+          <div class="ngo-id" id="ngoId">—</div>
+          <div class="ngo-city" id="ngoCity">—</div>
+        </div>
+      </div>
+
+      <!-- Donation Form -->
+      <div class="card form-card">
+        <div class="card-title">Donation Details</div>
+        <p class="sub">Fill in the details about the items you want to donate</p>
+
+        <form id="donationForm">
+          <!-- Category Selection -->
+          <div class="form-group">
+            <label for="itemCategory">Item Category *</label>
+            <select id="itemCategory" name="category" required>
+              <option value="">Select a category</option>
+            </select>
+          </div>
+
+          <!-- Item Name -->
+          <div class="form-group">
+            <label for="itemName">Item Name *</label>
+            <input 
+              type="text" 
+              id="itemName" 
+              name="itemName" 
+              placeholder="e.g., Rice, T-Shirt, Toy Car, Soap"
+              required
+            />
+          </div>
+
+          <!-- Quantity -->
+          <div class="form-group">
+            <label for="quantity">Quantity *</label>
+            <input 
+              type="number" 
+              id="quantity" 
+              name="quantity" 
+              placeholder="Enter quantity"
+              min="1"
+              required
+            />
+          </div>
+
+          <!-- Condition -->
+          <div class="form-group">
+            <label for="condition">Condition *</label>
+            <select id="condition" name="condition" required>
+              <option value="">Select condition</option>
+            </select>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-actions">
+            <button type="submit" class="btn primary" id="submitBtn">
+              Submit Donation →
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="donation.js"></script>
+</body>
+</html>
+

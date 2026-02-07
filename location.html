@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SevaSetu — Detect Location</title>
+
+  <link rel="stylesheet" href="location.css" />
+
+  <!-- Leaflet (CDN) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+</head>
+<body>
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo">❤</div>
+        <div class="brand-title">
+          <div class="name">Seva<span class="accent">Setu</span></div>
+          <div class="tag">Location • NGOs • Pickup</div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn link" href="landing.html">Back</a>
+        <button id="btnContinue" class="btn primary" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="container main">
+    <div class="grid">
+      <section class="panel">
+        <h1>Pick how you want to choose your city</h1>
+        <p class="sub">
+          Choose <b>one</b> option below. After selection, we’ll show latitude/longitude, update the map, and load NGOs.
+        </p>
+
+        <!-- OPTION PICKER -->
+        <div class="pick-grid">
+          <button id="pickAuto" class="pick-card active" type="button">
+            <div class="pick-top">
+              <div class="badge">Option A</div>
+              <div class="pick-title">Auto-detect (GPS)</div>
+            </div>
+            <div class="pick-desc">Fastest. Uses your live location and matches nearest city.</div>
+            <div class="pick-cta">Use GPS →</div>
+          </button>
+
+          <button id="pickManual" class="pick-card" type="button">
+            <div class="pick-top">
+              <div class="badge ghost">Option B</div>
+              <div class="pick-title">Manual city selection</div>
+            </div>
+            <div class="pick-desc">Use this if GPS is denied or inaccurate.</div>
+            <div class="pick-cta">Choose city →</div>
+          </button>
+        </div>
+
+        <!-- AUTO SECTION -->
+        <div id="autoSection" class="section">
+          <div class="section-head">
+            <div class="badge">Option A</div>
+            <div class="title">Auto-detect using GPS</div>
+          </div>
+
+          <div class="status">
+            <div class="dot"></div>
+            <div class="status-text" id="statusText">Click “Use GPS” to start detection…</div>
+          </div>
+
+          <div class="info">
+            <div class="kv">
+              <div class="k">Latitude</div>
+              <div class="v" id="latVal">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Longitude</div>
+              <div class="v" id="lngVal">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Detected City</div>
+              <div class="v" id="cityVal">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Match Distance</div>
+              <div class="v" id="distVal">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MANUAL SECTION -->
+        <div id="manualSection" class="section manual" style="display:none;">
+          <div class="section-head">
+            <div class="badge ghost">Option B</div>
+            <div class="title">Select city manually</div>
+          </div>
+
+          <div class="hint">
+            Select a city and press <b>Use this city</b>. Map + coordinates will update too.
+          </div>
+
+          <div class="row">
+            <select id="citySelect"></select>
+            <button id="btnUseCity" class="btn secondary" type="button">Use this city</button>
+          </div>
+        </div>
+
+        <!-- NGO LIST -->
+        <div class="card">
+          <div class="card-title">NGOs in selected city</div>
+
+          <div class="list" id="ngoList">
+            <div class="muted">Choose an option above to load NGOs.</div>
+          </div>
+
+          <div class="list-actions">
+            <button id="btnShowMore" class="btn secondary small" style="display:none;" type="button">Show more</button>
+          </div>
+        </div>
+
+        <!-- DETAILS -->
+        <div class="details" id="detailsBox" style="display:none;">
+          <div class="details-title">Selected NGO details</div>
+          <div class="details-grid">
+            <div class="ditem">
+              <div class="k">NGO</div>
+              <div class="v" id="dNgo">—</div>
+            </div>
+            <div class="ditem">
+              <div class="k">NGO ID</div>
+              <div class="v" id="dNgoId">—</div>
+            </div>
+            <div class="ditem">
+              <div class="k">Phone</div>
+              <div class="v" id="dNgoPhone">—</div>
+            </div>
+            <div class="ditem">
+              <div class="k">Volunteer</div>
+              <div class="v" id="dVol">—</div>
+            </div>
+            <div class="ditem">
+              <div class="k">Volunteer Phone</div>
+              <div class="v" id="dVolPhone">—</div>
+            </div>
+            <div class="ditem">
+              <div class="k">Volunteer Email</div>
+              <div class="v" id="dVolEmail">—</div>
+            </div>
+            <div class="ditem">
+              <div class="k">Volunteer Role</div>
+              <div class="v" id="dVolRole">—</div>
+            </div>
+          </div>
+          <div class="hint tiny">
+            This page is only for preview. Final NGO/Volunteer selection will be on the pickup/scheduling page.
+          </div>
+        </div>
+      </section>
+
+      <section class="map-wrap">
+        <div id="map"></div>
+        <div class="map-overlay">
+          <div class="pill">Map updates with city selection</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script src="location.js"></script>
+</body>
+</html>

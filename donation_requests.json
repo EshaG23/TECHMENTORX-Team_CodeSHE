@@ -1,0 +1,30 @@
+[
+  {
+    "donation_id": "D001",
+    "user_id": "U001",
+    "ngo_id": "N001",
+    "city": "Nagpur",
+    "mode": "Pickup",
+    "item_category": "Clothes",
+    "quantity": 10,
+    "condition": "High",
+    "scheduled_date": "2026-02-12",
+    "scheduled_time": "11:00",
+    "status": "Completed",
+    "otp": "482193"
+  },
+  {
+    "donation_id": "D002",
+    "user_id": "U003",
+    "ngo_id": "N003",
+    "city": "Mumbai",
+    "mode": "Drop-off",
+    "item_category": "Food",
+    "quantity": 5,
+    "condition": "Medium",
+    "scheduled_date": "2026-02-13",
+    "scheduled_time": "14:00",
+    "status": "Accepted",
+    "otp": "739204"
+  }
+]

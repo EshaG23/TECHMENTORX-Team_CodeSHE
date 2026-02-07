@@ -1,0 +1,13 @@
+{
+  "categories": [
+    "Food",
+    "Clothes",
+    "Toys",
+    "Essentials"
+  ],
+  "condition_levels": [
+    "Low",
+    "Medium",
+    "High"
+  ]
+}

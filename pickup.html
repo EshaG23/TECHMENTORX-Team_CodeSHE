@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SevaSetu — Pickup/Scheduling (Placeholder)</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;padding:24px;background:#f6fbfa;color:#0f172a}
+    .box{max-width:720px;margin:0 auto;background:#fff;border:1px solid #e7eef0;border-radius:18px;padding:18px}
+    .muted{color:#64748b}
+    code{background:#f1f5f9;padding:2px 6px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Pickup/Scheduling page (coming next)</h2>
+    <p class="muted">
+      This is just a placeholder so the <b>Continue</b> button works.
+      Next you’ll build: NGO + volunteer selection, pickup time scheduling, etc.
+    </p>
+    <p id="q"></p>
+  </div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    document.getElementById("q").innerHTML =
+      "Received query params: <code>" + params.toString() + "</code>";
+  </script>
+</body>
+</html>
