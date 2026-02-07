@@ -148,6 +148,84 @@ def _save_donation_requests(requests_list):
     with open(DONATION_REQUESTS_PATH, "w", encoding="utf-8") as f:
         json.dump(requests_list, f, indent=2, ensure_ascii=False)
 
+def _group_requests_by_request_id(records, ngo_id_filter=None):
+    """Filter by ngo_id if provided, then group by request_id. Returns list of aggregated requests."""
+    if ngo_id_filter:
+        records = [r for r in records if (r.get("ngo_id") or "").strip() == ngo_id_filter]
+    groups = {}
+    for r in records:
+        rid = r.get("request_id") or r.get("donation_id") or ("single-" + r.get("donation_id", ""))
+        if rid not in groups:
+            groups[rid] = {
+                "request_id": rid,
+                "donor_name": r.get("donor_name") or "",
+                "donor_phone": r.get("donor_phone") or "",
+                "donor_email": r.get("donor_email") or "",
+                "ngo_id": r.get("ngo_id") or "",
+                "ngo_name": r.get("ngo_name") or "",
+                "city": r.get("city") or "",
+                "mode": r.get("mode") or "",
+                "preferred_time": r.get("preferred_time"),
+                "address": r.get("address"),
+                "status": r.get("status") or "Pending",
+                "created_at": r.get("created_at") or "",
+                "items": [],
+            }
+        groups[rid]["items"].append({
+            "item_category": r.get("item_category") or "",
+            "item_name": r.get("item_name") or "",
+            "quantity": r.get("quantity") or 1,
+            "condition": r.get("condition") or "",
+        })
+    return list(groups.values())
+
+@app.get("/api/donation_requests")
+def api_get_donation_requests():
+    """Get donation requests, optionally filtered by ngo_id. Returns list grouped by request_id."""
+    ngo_id = (request.args.get("ngo_id") or "").strip()
+    try:
+        records = _load_donation_requests()
+        grouped = _group_requests_by_request_id(records, ngo_id if ngo_id else None)
+        return jsonify({"requests": grouped}), 200
+    except Exception as e:
+        print(f"Donation requests list error: {e}")
+        return jsonify({"error": "Failed to load donation requests"}), 500
+
+@app.patch("/api/donation_requests/<request_id>/status")
+def api_update_request_status(request_id):
+    """Update status of all records for this request_id (e.g. mark as Completed). Body: { \"status\": \"Completed\" }."""
+    if not (request_id or "").strip():
+        return jsonify({"error": "request_id required"}), 400
+    try:
+        data = request.get_json() or {}
+        new_status = (data.get("status") or "").strip() or "Completed"
+        requests_list = _load_donation_requests()
+        updated = 0
+        for r in requests_list:
+            if (r.get("request_id") or r.get("donation_id")) == request_id:
+                r["status"] = new_status
+                updated += 1
+        if updated == 0:
+            return jsonify({"error": "Request not found"}), 404
+        _save_donation_requests(requests_list)
+        return jsonify({"success": True, "updated": updated, "status": new_status}), 200
+    except Exception as e:
+        print(f"Update status error: {e}")
+        return jsonify({"error": "Failed to update status"}), 500
+
+@app.get("/api/ngos_all")
+def api_ngos_all():
+    """Return flat list of all NGOs with city, ngo_id, name for NGO selector."""
+    out = []
+    for city, ngos in NGO_BY_CITY.items():
+        for ngo in ngos:
+            out.append({
+                "city": city,
+                "ngo_id": ngo.get("ngo_id") or "",
+                "name": ngo.get("name") or "",
+            })
+    return jsonify({"ngos": out})
+
 @app.post("/api/donation_request")
 def api_donation_request():
     """Save a pickup or drop-off donation request. Expects JSON: donor_name, donor_phone, donor_email (optional),

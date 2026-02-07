@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Impact Leaderboard | SevaSetu</title>
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/leaderboard.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="logo-wrap">
+      <div class="logo-icon">♥</div>
+      <div>
+        <span class="logo-text">SevaSetu</span>
+        <span class="logo-tagline">Donate • Verify • Impact</span>
+      </div>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="leaderboard.html" style="color: var(--text-primary); font-weight: 600;">Leaderboard</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button type="button" class="btn-ghost">Login</button>
+      <a href="#" class="btn-primary">Continue</a>
+    </div>
+  </header>
+
+  <main class="leaderboard-page">
+    <div class="container">
+      <section class="leaderboard-header">
+        <h1>Community Impact Leaderboard</h1>
+        <p>Celebrating donors who are making a difference.</p>
+      </section>
+
+      <div class="leaderboard-tabs">
+        <button type="button" class="tab-btn active" data-tab="month">This Month</button>
+        <button type="button" class="tab-btn" data-tab="all">All Time</button>
+      </div>
+
+      <section class="top-three">
+        <article class="podium-card gold">
+          <div class="podium-rank" aria-hidden="true">🥇</div>
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=radha" alt="" class="podium-avatar" width="72" height="72" />
+          <h3 class="podium-name">Radha S.</h3>
+          <span class="podium-badge">Top Contributor</span>
+          <div class="podium-stats">
+            <span>2,840 pts</span>
+            <span>47 donations</span>
+          </div>
+        </article>
+        <article class="podium-card silver">
+          <div class="podium-rank" aria-hidden="true">🥈</div>
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=arjun" alt="" class="podium-avatar" width="72" height="72" />
+          <h3 class="podium-name">Arjun K.</h3>
+          <span class="podium-badge">Top Contributor</span>
+          <div class="podium-stats">
+            <span>2,120 pts</span>
+            <span>38 donations</span>
+          </div>
+        </article>
+        <article class="podium-card bronze">
+          <div class="podium-rank" aria-hidden="true">🥉</div>
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=priya" alt="" class="podium-avatar" width="72" height="72" />
+          <h3 class="podium-name">Priya M.</h3>
+          <span class="podium-badge">Top Contributor</span>
+          <div class="podium-stats">
+            <span>1,890 pts</span>
+            <span>31 donations</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="remaining-section">
+        <h3>More impact makers</h3>
+        <ul class="leaderboard-list">
+          <li class="list-card current-user">
+            <span class="list-rank">4</span>
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=me" alt="" class="list-avatar" width="44" height="44" />
+            <div class="list-info">
+              <p class="list-name">You (Demo User)</p>
+              <p class="list-points"><strong>1,240 pts</strong> • 22 donations</p>
+            </div>
+            <div class="list-progress-wrap">
+              <div class="list-progress-bar">
+                <div class="list-progress-fill" style="width: 65%;"></div>
+              </div>
+            </div>
+          </li>
+          <li class="list-card">
+            <span class="list-rank">5</span>
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=vijay" alt="" class="list-avatar" width="44" height="44" />
+            <div class="list-info">
+              <p class="list-name">Vijay R.</p>
+              <p class="list-points"><strong>1,050 pts</strong> • 18 donations</p>
+            </div>
+            <div class="list-progress-wrap">
+              <div class="list-progress-bar">
+                <div class="list-progress-fill" style="width: 52%;"></div>
+              </div>
+            </div>
+          </li>
+          <li class="list-card">
+            <span class="list-rank">6</span>
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=anita" alt="" class="list-avatar" width="44" height="44" />
+            <div class="list-info">
+              <p class="list-name">Anita P.</p>
+              <p class="list-points"><strong>890 pts</strong> • 15 donations</p>
+            </div>
+            <div class="list-progress-wrap">
+              <div class="list-progress-bar">
+                <div class="list-progress-fill" style="width: 44%;"></div>
+              </div>
+            </div>
+          </li>
+          <li class="list-card">
+            <span class="list-rank">7</span>
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=rahul" alt="" class="list-avatar" width="44" height="44" />
+            <div class="list-info">
+              <p class="list-name">Rahul D.</p>
+              <p class="list-points"><strong>720 pts</strong> • 12 donations</p>
+            </div>
+            <div class="list-progress-wrap">
+              <div class="list-progress-bar">
+                <div class="list-progress-fill" style="width: 36%;"></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="message-panel">
+        <p>Every donation counts. Even 1 item can change a life. 💚</p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SevaSetu — NGO Dashboard</title>
+  <link rel="stylesheet" href="location.css" />
+  <style>
+    .ngo-main { max-width: 720px; margin: 0 auto; }
+    .ngo-main h1 { font-size: 22px; margin: 0 0 8px; }
+    .ngo-main .sub { color: var(--muted); font-weight: 750; margin-bottom: 20px; }
+    .select-ngo-card {
+      background: rgba(14,168,122,.06);
+      border: 1px solid rgba(14,168,122,.2);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 24px;
+    }
+    .select-ngo-card label { display: block; font-weight: 850; font-size: 13px; color: var(--text); margin-bottom: 8px; }
+    .select-ngo-card select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+    }
+    .select-ngo-card select:focus { outline: none; border-color: var(--green); }
+    .refresh-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .refresh-row .muted { font-size: 13px; color: var(--muted); font-weight: 750; }
+    .requests-list { display: flex; flex-direction: column; gap: 14px; }
+    .request-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: 0 10px 22px rgba(2,44,43,.06);
+    }
+    .request-card-header {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;
+      margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(14,168,122,.12);
+    }
+    .request-id { font-size: 12px; font-weight: 800; color: var(--muted); letter-spacing: 0.03em; }
+    .request-status {
+      font-size: 11px; font-weight: 850; text-transform: uppercase; padding: 4px 10px; border-radius: 10px;
+    }
+    .request-status.pending { background: rgba(255,193,7,.2); color: #856404; }
+    .request-status.accepted { background: rgba(14,168,122,.15); color: var(--green); }
+    .request-status.completed { background: rgba(14,168,122,.2); color: var(--green2); }
+    .request-card-header .header-right { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .request-card-header .btn-mark-complete {
+      padding: 6px 12px; font-size: 11px; font-weight: 850;
+      border-radius: 10px; border: none; cursor: pointer;
+      background: var(--green); color: #fff;
+    }
+    .request-card-header .btn-mark-complete:hover { opacity: 0.9; }
+    .request-card-header .btn-mark-complete:disabled { opacity: 0.6; cursor: not-allowed; }
+    .request-donor { font-size: 16px; font-weight: 900; margin-bottom: 6px; }
+    .request-meta { font-size: 13px; color: var(--muted); font-weight: 750; margin-bottom: 2px; }
+    .request-meta a { color: var(--green); }
+    .request-mode { display: inline-block; margin-top: 8px; padding: 6px 12px; border-radius: 10px; font-size: 12px; font-weight: 850; }
+    .request-mode.pickup { background: rgba(14,168,122,.12); color: var(--green); }
+    .request-mode.drop-off { background: rgba(99,102,241,.12); color: #4f46e5; }
+    .request-items { margin-top: 10px; font-size: 13px; color: var(--text); font-weight: 750; }
+    .request-items .label { color: var(--muted); margin-right: 6px; }
+    .request-address { margin-top: 6px; font-size: 12px; color: var(--muted); font-weight: 700; }
+    .request-date { margin-top: 6px; font-size: 12px; color: var(--muted); font-weight: 700; }
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-weight: 750; }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: .6; }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo">❤</div>
+        <div class="brand-title">
+          <div class="name">Seva<span class="accent">Setu</span></div>
+          <div class="tag">NGO Portal</div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <a class="btn link" href="landing.html">Donor site</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="container main">
+    <div class="panel ngo-main">
+      <h1>Donation requests</h1>
+      <p class="sub">Select your organization to see pickup and drop-off requests from donors.</p>
+
+      <div class="select-ngo-card">
+        <label for="ngoSelect">Your organization</label>
+        <select id="ngoSelect">
+          <option value="">— Select NGO —</option>
+        </select>
+      </div>
+
+      <div id="dashboardArea" style="display: none;">
+        <div class="refresh-row">
+          <span class="muted" id="requestCount">0 requests</span>
+          <button type="button" class="btn secondary btn.small" id="btnRefresh">Refresh</button>
+        </div>
+        <div class="requests-list" id="requestsList"></div>
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <div class="icon">📋</div>
+          <p>No donation requests yet for this NGO.</p>
+          <p style="font-size: 12px; margin-top: 8px;">When donors schedule a pickup or drop-off for your organization, they will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const ngoSelect = document.getElementById("ngoSelect");
+      const dashboardArea = document.getElementById("dashboardArea");
+      const requestsList = document.getElementById("requestsList");
+      const requestCount = document.getElementById("requestCount");
+      const emptyState = document.getElementById("emptyState");
+      const btnRefresh = document.getElementById("btnRefresh");
+
+      const preferredTimeLabels = {
+        "asap": "As soon as possible",
+        "morning": "Morning (8 AM – 12 PM)",
+        "afternoon": "Afternoon (12 PM – 5 PM)",
+        "evening": "Evening (5 PM – 8 PM)",
+        "custom": "To be specified"
+      };
+
+      function formatDate(iso) {
+        if (!iso) return "—";
+        try {
+          const d = new Date(iso);
+          if (isNaN(d.getTime())) return iso;
+          return d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) + " at " + d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+        } catch (e) { return iso; }
+      }
+
+      function escapeHtml(str) {
+        if (str == null) return "";
+        var s = String(str);
+        return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
+      function itemsSummary(items) {
+        if (!items || items.length === 0) return "—";
+        return items.map(function (it) {
+          var name = it.item_name || it.item_category || "Item";
+          var qty = it.quantity || 1;
+          return name + " × " + qty;
+        }).join(", ");
+      }
+
+      function loadNgos() {
+        fetch("/api/ngos_all")
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            var ngos = data.ngos || [];
+            ngoSelect.innerHTML = "<option value=\"\">— Select NGO —</option>";
+            ngos.forEach(function (n) {
+              var opt = document.createElement("option");
+              opt.value = n.ngo_id || "";
+              opt.textContent = (n.city || "") + " — " + (n.name || n.ngo_id);
+              ngoSelect.appendChild(opt);
+            });
+          })
+          .catch(function () { ngoSelect.innerHTML = "<option value=\"\">Failed to load NGOs</option>"; });
+      }
+
+      function renderRequests(list) {
+        requestsList.innerHTML = "";
+        if (!list || list.length === 0) {
+          emptyState.style.display = "block";
+          return;
+        }
+        emptyState.style.display = "none";
+        list.sort(function (a, b) { return (b.created_at || "").localeCompare(a.created_at || ""); });
+        list.forEach(function (req) {
+          var mode = (req.mode || "").toLowerCase();
+          var modeClass = mode === "pickup" ? "pickup" : "drop-off";
+          var modeText = req.mode || "—";
+          var status = (req.status || "Pending").toLowerCase();
+          var statusClass = status === "completed" ? "completed" : status === "accepted" ? "accepted" : "pending";
+          var showMarkComplete = status !== "completed";
+          var card = document.createElement("div");
+          card.className = "request-card";
+          card.innerHTML =
+            "<div class=\"request-card-header\">" +
+              "<span class=\"request-id\">" + escapeHtml(req.request_id) + "</span>" +
+              "<span class=\"header-right\">" +
+                "<span class=\"request-status " + statusClass + "\">" + escapeHtml(req.status || "Pending") + "</span>" +
+                (showMarkComplete ? "<button type=\"button\" class=\"btn-mark-complete\" data-request-id=\"" + escapeHtml(req.request_id) + "\">Mark completed</button>" : "") +
+              "</span>" +
+            "</div>" +
+            "<div class=\"request-donor\">" + escapeHtml(req.donor_name || "Donor") + "</div>" +
+            "<div class=\"request-meta\">Phone: " + escapeHtml(req.donor_phone || "—") + "</div>" +
+            (req.donor_email ? "<div class=\"request-meta\">Email: <a href=\"mailto:" + escapeHtml(req.donor_email) + "\">" + escapeHtml(req.donor_email) + "</a></div>" : "") +
+            "<div><span class=\"request-mode " + modeClass + "\">" + escapeHtml(modeText) + "</span></div>" +
+            "<div class=\"request-items\"><span class=\"label\">Items:</span>" + escapeHtml(itemsSummary(req.items)) + "</div>" +
+            (req.preferred_time ? "<div class=\"request-meta\">Preferred time: " + escapeHtml(preferredTimeLabels[req.preferred_time] || req.preferred_time) + "</div>" : "") +
+            (req.address ? "<div class=\"request-address\">Address: " + escapeHtml(req.address) + "</div>" : "") +
+            "<div class=\"request-date\">Requested: " + escapeHtml(formatDate(req.created_at)) + "</div>";
+          requestsList.appendChild(card);
+          if (showMarkComplete) {
+            var btn = card.querySelector(".btn-mark-complete");
+            if (btn) btn.addEventListener("click", function () {
+              var rid = btn.getAttribute("data-request-id");
+              if (!rid) return;
+              btn.disabled = true;
+              btn.textContent = "Updating…";
+              fetch("/api/donation_requests/" + encodeURIComponent(rid) + "/status", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status: "Completed" })
+              }).then(function (r) { return r.json(); }).then(function (data) {
+                if (data.success) loadRequests();
+                else { btn.disabled = false; btn.textContent = "Mark completed"; alert(data.error || "Failed"); }
+              }).catch(function () {
+                btn.disabled = false;
+                btn.textContent = "Mark completed";
+                alert("Network error. Try again.");
+              });
+            });
+          }
+        });
+      }
+
+      function loadRequests() {
+        var ngoId = (ngoSelect.value || "").trim();
+        if (!ngoId) {
+          dashboardArea.style.display = "none";
+          return;
+        }
+        fetch("/api/donation_requests?ngo_id=" + encodeURIComponent(ngoId))
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            var requests = data.requests || [];
+            requestCount.textContent = requests.length + " request(s)";
+            renderRequests(requests);
+            dashboardArea.style.display = "block";
+          })
+          .catch(function () {
+            requestCount.textContent = "Error loading";
+            requestsList.innerHTML = "";
+            emptyState.style.display = "block";
+            emptyState.querySelector("p").textContent = "Failed to load requests. Try again.";
+            dashboardArea.style.display = "block";
+          });
+      }
+
+      ngoSelect.addEventListener("change", loadRequests);
+      btnRefresh.addEventListener("click", loadRequests);
+      loadNgos();
+    })();
+  </script>
+</body>
+</html>
