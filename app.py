@@ -3,6 +3,7 @@ import json, math, os
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(APP_DIR, "ngo_info_by_city_with_volunteers.json")
+USERS_PATH = os.path.join(APP_DIR, "users.json")
 
 with open(DATA_PATH, "r", encoding="utf-8") as f:
     NGO_BY_CITY = json.load(f)
@@ -40,8 +41,8 @@ app = Flask(__name__, static_folder=".", static_url_path="")
 
 @app.get("/")
 def root():
-    # Open landing page by default
-    return send_from_directory(APP_DIR, "landing.html")
+    # Open login page by default
+    return send_from_directory(APP_DIR, "login.html")
 
 @app.get("/<path:filename>")
 def static_files(filename):
@@ -88,7 +89,54 @@ def api_items_catalog():
     except json.JSONDecodeError:
         return jsonify({"error": "Invalid items catalog format"}), 500
 
+@app.post("/api/login")
+def api_login():
+    try:
+        data = request.get_json()
+        email = data.get("email", "").strip().lower()
+        password = data.get("password", "")
+        
+        if not email or not password:
+            return jsonify({"error": "Email and password are required"}), 400
+        
+        # Load users from JSON file
+        try:
+            with open(USERS_PATH, "r", encoding="utf-8") as f:
+                users = json.load(f)
+        except FileNotFoundError:
+            return jsonify({"error": "Users database not found"}), 500
+        except json.JSONDecodeError:
+            return jsonify({"error": "Invalid users database format"}), 500
+        
+        # Find user by email
+        user = None
+        for u in users:
+            if u.get("email", "").lower() == email:
+                user = u
+                break
+        
+        if not user:
+            return jsonify({"error": "Invalid email or password"}), 401
+        
+        # Check password
+        if user.get("password") != password:
+            return jsonify({"error": "Invalid email or password"}), 401
+        
+        # Login successful - return user data (without password)
+        return jsonify({
+            "user_id": user.get("user_id"),
+            "name": user.get("name"),
+            "email": user.get("email"),
+            "phone": user.get("phone"),
+            "city": user.get("city"),
+            "points": user.get("points", 0),
+            "badges": user.get("badges", [])
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": "Server error during login"}), 500
+
 if __name__ == "__main__":
     # Run: python app.py
-    # Then open: http://127.0.0.1:5000/ (landing page opens first)
+    # Then open: http://127.0.0.1:5000/ (login page opens first)
     app.run(host="127.0.0.1", port=5000, debug=True)

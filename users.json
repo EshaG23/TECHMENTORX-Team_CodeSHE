@@ -5,7 +5,7 @@
     "email": "rahul@gmail.com",
     "phone": "9876543210",
     "city": "Nagpur",
-    "password": "hashed_password",
+    "password": "rahul123",
     "points": 120,
     "badges": [
       "First Donation",
@@ -18,7 +18,7 @@
     "email": "ananya@gmail.com",
     "phone": "9876543211",
     "city": "Nagpur",
-    "password": "hashed_password",
+    "password": "ananya123",
     "points": 95,
     "badges": [
       "First Donation"
@@ -30,7 +30,7 @@
     "email": "amit@gmail.com",
     "phone": "9876543212",
     "city": "Mumbai",
-    "password": "hashed_password",
+    "password": "amit123",
     "points": 180,
     "badges": [
       "First Donation",
@@ -44,7 +44,7 @@
     "email": "sneha@gmail.com",
     "phone": "9876543213",
     "city": "Mumbai",
-    "password": "hashed_password",
+    "password": "sneha123",
     "points": 60,
     "badges": [
       "First Donation"
@@ -56,7 +56,7 @@
     "email": "rohit@gmail.com",
     "phone": "9876543214",
     "city": "Delhi",
-    "password": "hashed_password",
+    "password": "rohit123",
     "points": 210,
     "badges": [
       "First Donation",
@@ -70,7 +70,7 @@
     "email": "pooja@gmail.com",
     "phone": "9876543215",
     "city": "Delhi",
-    "password": "hashed_password",
+    "password": "pooja123",
     "points": 140,
     "badges": [
       "First Donation",
@@ -83,7 +83,7 @@
     "email": "karan@gmail.com",
     "phone": "9876543216",
     "city": "Kolkata",
-    "password": "hashed_password",
+    "password": "karan123",
     "points": 75,
     "badges": [
       "First Donation"
@@ -95,7 +95,7 @@
     "email": "neha@gmail.com",
     "phone": "9876543217",
     "city": "Kolkata",
-    "password": "hashed_password",
+    "password": "neha123",
     "points": 160,
     "badges": [
       "First Donation",
@@ -108,7 +108,7 @@
     "email": "arjun@gmail.com",
     "phone": "9876543218",
     "city": "Bangalore",
-    "password": "hashed_password",
+    "password": "arjun123",
     "points": 200,
     "badges": [
       "First Donation",
@@ -121,7 +121,7 @@
     "email": "meera@gmail.com",
     "phone": "9876543219",
     "city": "Bangalore",
-    "password": "hashed_password",
+    "password": "meera123",
     "points": 110,
     "badges": [
       "First Donation",

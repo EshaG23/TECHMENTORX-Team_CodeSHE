@@ -474,12 +474,30 @@
     const MAP_PAGE = "location.html";      // set your map page here
     const LOGIN_PAGE = "login.html";       // optional
 
-    document.getElementById("yr").textContent = new Date().getFullYear();
+    // Check if user is logged in
+    function checkAuth() {
+      const userData = localStorage.getItem('sevasetu_user');
+      if (!userData) {
+        // Not logged in, redirect to login page
+        window.location.href = LOGIN_PAGE;
+        return false;
+      }
+      return true;
+    }
+
+    // Initialize - check authentication
+    if (!checkAuth()) {
+      // Redirect will happen, stop execution
+    } else {
+      document.getElementById("yr").textContent = new Date().getFullYear();
+    }
 
     function goToMap(){
       window.location.href = MAP_PAGE;
     }
     function openLogin(){
+      // Clear user data and redirect to login
+      localStorage.removeItem('sevasetu_user');
       window.location.href = LOGIN_PAGE;
     }
   </script>
